@@ -24,6 +24,18 @@ ExportedObj/
 *.pdb
 *.opendb
 
+# Daydream Demos:
+Assets/GoogleVR/Demos
+Assets/GoogleVR/Demos.meta
+
+# Android SDK
+Assets/Plugins/Android/com.google.firebase.*
+Assets/Plugins/Android/com.google.android.gms.*
+Assets/Plugins/Android/com.android.support.*
+Assets/Plugins/Android/com.google.games.*
+ProjectSettings/AndroidResolverDependencies.xml
+ProjectSettings/GvhProjectSettings.xml
+
 # Unity3D generated meta files
 *.pidb.meta
 *.pdb.meta
