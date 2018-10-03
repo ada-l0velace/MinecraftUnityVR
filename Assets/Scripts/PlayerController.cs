@@ -15,10 +15,7 @@ public class PlayerController : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		//if (vrCamera.eulerAngles.x >= toggleAngle && vrCamera.eulerAngles.x < 90.0f) {
-		//	moveForward = true;
-		//} else
-		//	moveForward = false;
+		moveForward = (vrCamera.eulerAngles.x >= toggleAngle && vrCamera.eulerAngles.x < 90.0f) ? true : false;
 		if (Input.GetKeyDown ("f"))
 			moveForward = !moveForward;
 		if (moveForward) {
