@@ -5,7 +5,7 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour {
 	public Transform vrCamera;
 	public float toggleAngle = 45.0f;
-	public float speed = 3.0f;
+	public float speed = 0.5f;
 	public bool moveForward;
 	private CharacterController cc;
 	// Use this for initialization
@@ -18,9 +18,11 @@ public class PlayerController : MonoBehaviour {
 		moveForward = (vrCamera.eulerAngles.x >= toggleAngle && vrCamera.eulerAngles.x < 90.0f) ? true : false;
 		if (Input.GetKeyDown ("f"))
 			moveForward = !moveForward;
-		if (moveForward) {
+		if (moveForward && cc.isGrounded) {
 			Vector3 forward = vrCamera.TransformDirection (Vector3.forward);
-			cc.SimpleMove (forward * speed);
-		}
+			cc.Move (speed * forward);
+		} else {
+            cc.Move(Physics.gravity);
+        }
 	}
 }
