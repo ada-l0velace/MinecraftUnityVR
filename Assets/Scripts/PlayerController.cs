@@ -19,7 +19,7 @@ public class PlayerController : MonoBehaviour {
 	void Update () {
 		moveForward = (vrCamera.eulerAngles.x >= forwardAngle && vrCamera.eulerAngles.x < 90.0f) ? true : false;
 		moveBackward = (vrCamera.eulerAngles.x <= backwardAngle && vrCamera.eulerAngles.x > 180.0f) ? true : false;
-		Debug.Log (vrCamera.eulerAngles.x + moveBackward.ToString() + moveForward.ToString());
+		//Debug.Log (vrCamera.eulerAngles.x + moveBackward.ToString() + moveForward.ToString());
 		if (moveForward && cc.isGrounded) {
 			Vector3 forward = vrCamera.TransformDirection (Vector3.forward);
 			forward.y = 0;
