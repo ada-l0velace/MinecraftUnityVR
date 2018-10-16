@@ -128,7 +128,7 @@ PlayerSettings:
   isWsaHolographicRemotingEnabled: 0
   vrSettings:
     cardboard:
-      depthFormat: 0
+      depthFormat: 2
       enableTransitionView: 0
     daydream:
       depthFormat: 0
