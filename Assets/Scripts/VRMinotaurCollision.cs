@@ -5,7 +5,7 @@ public class VRMinotaurCollision : MonoBehaviour
 {
     void OnCollisionEnter(Collision col)
     {
-        if (col.gameObject.name == "minotaur_hr-wind")
+        if (col.gameObject.tag == "minotauro")
         {
             Destroy(col.gameObject);
         }
