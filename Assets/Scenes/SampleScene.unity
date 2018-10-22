@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.36532465, g: 0.40784606, b: 0.4510367, a: 1}
+  m_IndirectSpecularColor: {r: 0.36629763, g: 0.40771344, b: 0.44881058, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -884,7 +884,7 @@ Transform:
   - {fileID: 2003543515}
   - {fileID: 2122317166}
   m_Father: {fileID: 2050355876}
-  m_RootOrder: 1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &534669906
 MonoBehaviour:
@@ -10745,12 +10745,12 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1272432209}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1.2, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalRotation: {x: -0.7071068, y: 0, z: 0, w: 0.7071068}
+  m_LocalPosition: {x: 0, y: 10.24, z: 0}
+  m_LocalScale: {x: 50, y: 50, z: 50}
   m_Children: []
-  m_Father: {fileID: 2050355876}
-  m_RootOrder: 0
+  m_Father: {fileID: 1507482619}
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: -90, y: 0, z: 0}
 --- !u!199 &1272432211
 ParticleSystemRenderer:
@@ -16660,7 +16660,6 @@ Transform:
   m_LocalPosition: {x: 0.094659485, y: 0.5, z: 0.30360758}
   m_LocalScale: {x: 0.00058975845, y: 0.021461347, z: 0.00017182666}
   m_Children:
-  - {fileID: 1272432210}
   - {fileID: 534669905}
   m_Father: {fileID: 1668308141}
   m_RootOrder: 1
