@@ -6,6 +6,7 @@ TagManager:
   tags:
   - minotauro
   - spear
+  - bigflames
   layers:
   - Default
   - TransparentFX
