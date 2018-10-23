@@ -19734,7 +19734,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   stare_time: 2
-  Grab: 0
   VRHand: {fileID: 583756844}
   TargetObject: {fileID: 859805734}
   HandRotation: {x: 0, y: 0, z: 0}
@@ -24655,7 +24654,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1272432209}
   m_LocalRotation: {x: -0.03726055, y: 0.7061244, z: 0.7061244, w: 0.03726055}
-  m_LocalPosition: {x: 0.10030252, y: 1.72, z: 0.5801425}
+  m_LocalPosition: {x: 0.10030252, y: 1.6357, z: 0.5801425}
   m_LocalScale: {x: 40, y: 40, z: 40}
   m_Children: []
   m_Father: {fileID: 1668308141}
@@ -39810,7 +39809,6 @@ GameObject:
   - component: {fileID: 2050355876}
   - component: {fileID: 2050355877}
   - component: {fileID: 2050355878}
-  - component: {fileID: 2050355879}
   - component: {fileID: 2050355880}
   m_Layer: 0
   m_Name: Player
@@ -39847,7 +39845,7 @@ MonoBehaviour:
   vrCamera: {fileID: 534669905}
   forwardAngle: 30
   backwardAngle: 335
-  speed: 3
+  speed: 2
   moveForward: 0
   moveBackward: 0
 --- !u!143 &2050355878
@@ -39867,18 +39865,6 @@ CharacterController:
   m_SkinWidth: 0.08
   m_MinMoveDistance: 0.001
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &2050355879
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 2050355875}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1d9e1a5e2e3a39a4186e2848248aa471, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  flames: {fileID: 0}
 --- !u!54 &2050355880
 Rigidbody:
   m_ObjectHideFlags: 0

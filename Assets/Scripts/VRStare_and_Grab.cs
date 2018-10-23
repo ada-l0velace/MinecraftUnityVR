@@ -5,7 +5,7 @@ using UnityEngine;
 public class VRStare_and_Grab : MonoBehaviour {
 
     public float stare_time = 0f; // timer 
-    public bool Grab = false;
+    public static bool Grab = false;
     public Transform VRHand;
     public Rigidbody TargetObject;
     public Vector3 HandRotation;
