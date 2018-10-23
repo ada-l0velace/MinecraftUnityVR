@@ -32,5 +32,6 @@ public class PlayerController : MonoBehaviour {
 		else {
             //cc.Move(Physics.gravity);
         }
+
 	}
 }
