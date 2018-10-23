@@ -459,6 +459,25 @@ Light:
   m_UseColorTemperature: 0
   m_ShadowRadius: 0
   m_ShadowAngle: 0
+--- !u!1 &298667232 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 100146, guid: 864e89fe8f0e70042a90ca1c988cb8b5,
+    type: 3}
+  m_PrefabInternal: {fileID: 1507482618}
+--- !u!64 &298667233
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 298667232}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Convex: 0
+  m_CookingOptions: 14
+  m_SkinWidth: 0.01
+  m_Mesh: {fileID: 0}
 --- !u!1 &301518071
 GameObject:
   m_ObjectHideFlags: 0
@@ -5716,6 +5735,39 @@ MeshFilter:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 642123899}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1 &750217123 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 100142, guid: 864e89fe8f0e70042a90ca1c988cb8b5,
+    type: 3}
+  m_PrefabInternal: {fileID: 1507482618}
+--- !u!136 &750217124
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 750217123}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  m_Radius: 0.5
+  m_Height: 1
+  m_Direction: 1
+  m_Center: {x: 210, y: 0, z: 0}
+--- !u!54 &750217125
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 750217123}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_UseGravity: 1
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!1 &859805731
 GameObject:
   m_ObjectHideFlags: 0
@@ -5729,6 +5781,7 @@ GameObject:
   - component: {fileID: 859805735}
   - component: {fileID: 859805734}
   - component: {fileID: 859805733}
+  - component: {fileID: 859805737}
   m_Layer: 0
   m_Name: Spear
   m_TagString: Untagged
@@ -5854,6 +5907,17 @@ CapsuleCollider:
   m_Height: 0.012
   m_Direction: 2
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &859805737
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 859805731}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1d9e1a5e2e3a39a4186e2848248aa471, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &928983885
 Prefab:
   m_ObjectHideFlags: 0
@@ -10746,7 +10810,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1272432209}
   m_LocalRotation: {x: -0.7071068, y: 0, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: 0, y: 10.24, z: 0}
+  m_LocalPosition: {x: -2.61, y: 6.47, z: -0.96}
   m_LocalScale: {x: 50, y: 50, z: 50}
   m_Children: []
   m_Father: {fileID: 1507482619}
@@ -10828,7 +10892,7 @@ ParticleSystem:
   startDelay:
     serializedVersion: 2
     minMaxState: 0
-    scalar: 2
+    scalar: 1
     minScalar: 0
     maxCurve:
       serializedVersion: 2
@@ -11463,7 +11527,7 @@ ParticleSystem:
     sphericalDirectionAmount: 0
     randomPositionAmount: 0
     radius:
-      value: 0.23
+      value: 0.6
       mode: 0
       spread: 0
       speed:
@@ -11700,8 +11764,8 @@ ParticleSystem:
         - serializedVersion: 3
           time: 0
           value: 1
-          inSlope: -2
-          outSlope: -2
+          inSlope: 0
+          outSlope: 0
           tangentMode: 0
           weightedMode: 0
           inWeight: 0
@@ -11709,11 +11773,11 @@ ParticleSystem:
         - serializedVersion: 3
           time: 1
           value: 0
-          inSlope: 0
-          outSlope: 0
+          inSlope: -6.186378
+          outSlope: -6.186378
           tangentMode: 0
           weightedMode: 0
-          inWeight: 0
+          inWeight: 0.20533341
           outWeight: 0
         m_PreInfinity: 2
         m_PostInfinity: 2
@@ -11967,22 +12031,22 @@ ParticleSystem:
         m_Curve:
         - serializedVersion: 3
           time: 0
-          value: 1
-          inSlope: 0
-          outSlope: 0
-          tangentMode: 0
+          value: 0
+          inSlope: 1
+          outSlope: 1
+          tangentMode: 34
           weightedMode: 0
-          inWeight: 0.33333334
-          outWeight: 0.33333334
+          inWeight: 0
+          outWeight: 0
         - serializedVersion: 3
           time: 1
           value: 1
-          inSlope: 0
-          outSlope: 0
-          tangentMode: 0
+          inSlope: 1
+          outSlope: 1
+          tangentMode: 34
           weightedMode: 0
-          inWeight: 0.33333334
-          outWeight: 0.33333334
+          inWeight: 0
+          outWeight: 0
         m_PreInfinity: 2
         m_PostInfinity: 2
         m_RotationOrder: 4
@@ -13829,21 +13893,21 @@ ParticleSystem:
         - serializedVersion: 3
           time: 0
           value: 0
-          inSlope: 0
+          inSlope: 1
           outSlope: 1
-          tangentMode: 0
+          tangentMode: 34
           weightedMode: 0
-          inWeight: 0.33333334
-          outWeight: 0.33333334
+          inWeight: 0
+          outWeight: 0
         - serializedVersion: 3
           time: 1
           value: 1
           inSlope: 1
-          outSlope: 0
-          tangentMode: 0
+          outSlope: 1
+          tangentMode: 34
           weightedMode: 0
-          inWeight: 0.33333334
-          outWeight: 0.33333334
+          inWeight: 0
+          outWeight: 0
         m_PreInfinity: 2
         m_PostInfinity: 2
         m_RotationOrder: 4
@@ -14395,7 +14459,7 @@ ParticleSystem:
     collidesWithDynamic: 1
     interiorCollisions: 0
   TriggerModule:
-    enabled: 0
+    enabled: 1
     collisionShape0: {fileID: 0}
     collisionShape1: {fileID: 0}
     collisionShape2: {fileID: 0}
@@ -15556,15 +15620,15 @@ Prefab:
     m_Modifications:
     - target: {fileID: 400142, guid: 864e89fe8f0e70042a90ca1c988cb8b5, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0.10948398
+      value: 0.10942
       objectReference: {fileID: 0}
     - target: {fileID: 400142, guid: 864e89fe8f0e70042a90ca1c988cb8b5, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: 0.04
       objectReference: {fileID: 0}
     - target: {fileID: 400142, guid: 864e89fe8f0e70042a90ca1c988cb8b5, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0.5707966
+      value: 0.5731
       objectReference: {fileID: 0}
     - target: {fileID: 400142, guid: 864e89fe8f0e70042a90ca1c988cb8b5, type: 3}
       propertyPath: m_LocalRotation.x
