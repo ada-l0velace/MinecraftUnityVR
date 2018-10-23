@@ -5,6 +5,7 @@ public class VRMinotauroCollision : MonoBehaviour
 {
 	void FixedUpdate()
     {
+
 		Ray ray = Camera.main.ScreenPointToRay (transform.position);
 		RaycastHit hit;
 

@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class VRMinotaurCollision : MonoBehaviour
+public class VRMinotauroCollision : MonoBehaviour
 {
 	void FixedUpdate()
     {
@@ -22,5 +22,6 @@ public class VRMinotaurCollision : MonoBehaviour
 			//Debug.DrawLine (transform.position,transform.parent.TransformDirection(a), Color.green); 
 
 		}
+
     }
 }
