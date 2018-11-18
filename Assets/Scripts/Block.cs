@@ -3,13 +3,26 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CreateQuads : MonoBehaviour {
+public class Block {
 
 	public Material material;
 
 	enum Cubeside {BOTTOM, TOP, LEFT, RIGHT, FRONT, BACK};
+	public enum BlockType {GRASS, DIRT, STONE};
 
-	void CombineQuads() {
+	BlockType bType;
+	GameObject parent;
+	Vector3 position;
+	Material cubeMaterial;
+
+	public Block(BlockType b, Vector3 pos, GameObject p, Material c) {
+		bType = b;
+		parent = p;
+		position = pos;
+		cubeMaterial = c;
+	}
+
+	/*void CombineQuads() {
 		MeshFilter[] meshFilters = GetComponentsInChildren<MeshFilter>();
 		CombineInstance[] combine = new CombineInstance[meshFilters.Length];
 		int i = 0;
@@ -31,7 +44,7 @@ public class CreateQuads : MonoBehaviour {
 		foreach (Transform quad in this.transform) {
 			Destroy (quad.gameObject);
 		}
-	}
+	}*/
 
 	void CreateQuad(Cubeside side, ItemTexture texture){
 		
@@ -154,21 +167,24 @@ public class CreateQuads : MonoBehaviour {
 		mesh.RecalculateBounds();
 
 		GameObject quad = new GameObject ("quad");
-		quad.transform.parent = this.gameObject.transform;
+		quad.transform.parent = parent.transform;
+		quad.transform.position = position;
+
 		MeshFilter meshFilter = (MeshFilter)quad.AddComponent (typeof(MeshFilter));
 		meshFilter.mesh = mesh;
+
 		MeshRenderer renderer = quad.AddComponent (typeof(MeshRenderer)) as MeshRenderer;
-		renderer.material = material;
+		renderer.material = cubeMaterial;
 		//quad.AddComponent(typeof(MeshCollider)) as MeshCollider;
 
 	}
 	// Use this for initialization
-	void Start () {
+	public void Draw () {
 		//ItemTexture[] textures = {ItemTexture.Grass};
 		foreach (Cubeside side in Enum.GetValues(typeof(Cubeside))) {
 			CreateQuad (side, ItemTexture.Grass);
 		}
-		CombineQuads();
+		//CombineQuads();
 	}
 	
 	// Update is called once per frame
