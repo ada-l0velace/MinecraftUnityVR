@@ -20,17 +20,21 @@ public class PlayerController : MonoBehaviour {
 		moveForward = (vrCamera.eulerAngles.x >= forwardAngle && vrCamera.eulerAngles.x < 90.0f) ? true : false;
 		moveBackward = (vrCamera.eulerAngles.x <= backwardAngle && vrCamera.eulerAngles.x > 180.0f) ? true : false;
 		//Debug.Log (vrCamera.eulerAngles.x + moveBackward.ToString() + moveForward.ToString());
-		if (moveForward) {
-			Vector3 forward = vrCamera.TransformDirection (Vector3.forward);
+		if (moveForward && cc.isGrounded) {
+			Vector3 forward = vrCamera.TransformDirection (Vector3.forward );
 			forward.y = 0;
-			cc.Move (speed * forward);
-		} else if (moveBackward) {
+			cc.Move (speed * forward * Time.deltaTime);
+		} else if (moveBackward && cc.isGrounded) {
 			Vector3 backward = vrCamera.TransformDirection (Vector3.back);
 			backward.y = 0;
-			cc.Move (speed * backward);
+			//cc.Move (speed * backward * Time.deltaTime);
 		}
-		else {
-            //cc.Move(Physics.gravity);
+		else if (Input.GetKeyDown(KeyCode.Space) && cc.isGrounded){
+			Vector3 upward = vrCamera.TransformDirection (Vector3.up);
+			cc.Move (speed * 30* upward * Time.deltaTime);
+		}
+		else if (!cc.isGrounded) {
+			cc.Move(Physics.gravity * Time.deltaTime);
         }
 
 	}
