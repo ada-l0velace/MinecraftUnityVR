@@ -14,12 +14,14 @@ public class Block {
 	GameObject parent;
 	Vector3 position;
 	Material cubeMaterial;
+	public bool isSolid;
 
 	public Block(BlockType b, Vector3 pos, GameObject p, Material c) {
 		bType = b;
 		parent = p;
 		position = pos;
 		cubeMaterial = c;
+		isSolid = true;
 	}
 
 	/*void CombineQuads() {
@@ -45,6 +47,17 @@ public class Block {
 			Destroy (quad.gameObject);
 		}
 	}*/
+
+	public bool HasSolidNeighbour(int x, int y, int z) {
+		Block[,,] chunks = parent.GetComponent<Chunks>().chunkData;
+		try {
+			if (chunks[x,y,z] != null) {
+				return chunks[x,y,z].isSolid;
+			}
+		}
+		catch(System.IndexOutOfRangeException ex) {}
+		return false;
+	}
 
 	void CreateQuad(Cubeside side, ItemTexture texture){
 		
@@ -181,8 +194,12 @@ public class Block {
 	// Use this for initialization
 	public void Draw () {
 		//ItemTexture[] textures = {ItemTexture.Grass};
+		int[][] b = new int[][] {  new int[] {0,-1,0} ,  new int[] {0,1,0} ,  new int[] {-1,0,0} ,  new int[] {1,0,0},  new int[] {0,0,1}, new int[] {0,0,-1}  };
+		int i = 0;
 		foreach (Cubeside side in Enum.GetValues(typeof(Cubeside))) {
-			CreateQuad (side, ItemTexture.Grass);
+			if(!HasSolidNeighbour((int)position.x + b[i][0],(int)position.y+ b[i][1],(int)position.z+ b[i][2]))
+				CreateQuad (side, ItemTexture.Grass);
+			i += 1;
 		}
 		//CombineQuads();
 	}

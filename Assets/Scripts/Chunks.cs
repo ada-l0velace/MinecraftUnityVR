@@ -5,6 +5,7 @@ using UnityEngine.Networking;
 
 public class Chunks : MonoBehaviour {
 	public Material cubeMaterial;
+	public Block[,,] chunkData;
 
 	// Use this for initialization
 	void Start () {
@@ -58,6 +59,7 @@ public class Chunks : MonoBehaviour {
 		//int depth = 30;
 		//int width = 30;
 		//int height = 3;
+		chunkData = new Block[width, height, depth];
 		int heightScale = 20;
 		int heightOffset = 1;
 		float detailScale = 25.0f;
@@ -69,18 +71,38 @@ public class Chunks : MonoBehaviour {
 				//Mathf.Round (transform.position.y, MidpointRounding.AwayFromZero);
 				//Mathf.Round (transform.position.z+1, MidpointRounding.AwayFromZero);
 				Vector3 blockPos = new Vector3 (x, y, z);
-				CreateBlock (y, blockPos, true);
+				//CreateBlock (y, blockPos, true);
+				chunkData[x,y,z] = new Block (Block.BlockType.GRASS, blockPos, this.gameObject, cubeMaterial);
 
 				//return;
 				while (y > 0) {
 					y--;
 					blockPos = new Vector3 (x, y, z);
-					CreateBlock (y, blockPos, false);
+					chunkData[x,y,z] = new Block (Block.BlockType.GRASS, blockPos, this.gameObject, cubeMaterial);
+					//CreateBlock (y, blockPos, false);
+
 				}
 
 			}
+		}
+
+		for (int z = 0; z < depth; z++) {
+			for (int x = 0; x < width; x++) {
+				//int y = (int)(Mathf.PerlinNoise ((x + seed) / detailScale, (z + seed) / detailScale ) * heightScale) * heightOffset;
+				//Mathf.Round (transform.position.x, MidpointRounding.AwayFromZero);
+				//Mathf.Round (transform.position.y, MidpointRounding.AwayFromZero);
+				//Mathf.Round (transform.position.z+1, MidpointRounding.AwayFromZero);
+				for (int y = 0; y < height; y++) {
+					Vector3 blockPos = new Vector3 (x, y, z);
+					if (chunkData [x, y, z] != null) {
+						chunkData [x, y, z].Draw ();
+					}
+				}
+			}
 			yield return null;
 		}
+
+
 		CombineQuads ();
 	}
 
