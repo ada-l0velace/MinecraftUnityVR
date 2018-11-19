@@ -23,7 +23,10 @@ public class Block {
 		position = pos;
 		cubeMaterial = c;
 		owner = o;
-		isSolid = true;
+		if(bType == BlockType.AIR)
+			isSolid = false;
+		else
+			isSolid = true;
 	}
 
 	/*void CombineQuads() {
@@ -84,9 +87,7 @@ public class Block {
 			chunks = owner.chunkData;	
 		
 		try {
-			if (chunks [x, y, z] != null) {
-				return chunks [x, y, z].isSolid;
-			}
+			return chunks [x, y, z].isSolid;
 		} catch (System.IndexOutOfRangeException ex) {}
 		return false;
 	}
@@ -226,6 +227,8 @@ public class Block {
 	// Use this for initialization
 	public void Draw () {
 		//ItemTexture[] textures = {ItemTexture.Grass};
+		if (bType == BlockType.AIR)
+			return;
 		int[][] b = new int[][] {  new int[] {0,-1,0} ,  new int[] {0,1,0} ,  new int[] {-1,0,0} ,  new int[] {1,0,0},  new int[] {0,0,1}, new int[] {0,0,-1}  };
 		int i = 0;
 		foreach (Cubeside side in Enum.GetValues(typeof(Cubeside))) {

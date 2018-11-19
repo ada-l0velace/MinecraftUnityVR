@@ -18,42 +18,35 @@ public class Chunk {
 
 	void BuildChunk() {
 		chunkData = new Block[World.chunkSize, World.chunkSize, World.chunkSize];
-		int heightScale = World.chunkSize-1;
-		int heightOffset = 1;
-		float detailScale = 25.0f;
-		int seed = Random.Range(100000, 999999);
-		for (int z = 0; z < World.chunkSize; z++) {
-			for (int x = 0; x < World.chunkSize; x++) {
-				int y = (int)(Mathf.PerlinNoise ((x + seed) / detailScale, (z + seed) / detailScale ) * heightScale) * heightOffset;
-				//y = World.chunkSize-1;
-				//Mathf.Round (transform.position.x, MidpointRounding.AwayFromZero);
-				//Mathf.Round (transform.position.y, MidpointRounding.AwayFromZero);
-				//Mathf.Round (transform.position.z+1, MidpointRounding.AwayFromZero);
-				Vector3 blockPos = new Vector3 (x, y, z);
-				//CreateBlock (y, blockPos, true);
-				chunkData[x,y,z] = new Block (Block.BlockType.GRASS, blockPos, chunk.gameObject, cubeMaterial, this);
 
-				//return;
-				while (y > 0) {
-					y--;
-					blockPos = new Vector3 (x, y, z);
-					chunkData[x,y,z] = new Block (Block.BlockType.GRASS, blockPos, chunk.gameObject, cubeMaterial, this);
-					//CreateBlock (y, blockPos, false);
+		for (int z = 0; z < World.chunkSize; z++) {
+			for (int y = 0; y < World.chunkSize; y++) {
+				for (int x = 0; x < World.chunkSize; x++) {
+					
+					//int y = (int)(Mathf.PerlinNoise ((x + seed) / detailScale, (z + seed) / detailScale ) * heightScale) * heightOffset;
+					//y = World.chunkSize-1;
+					Vector3 blockPos = new Vector3 (x, y, z);
+					int worldX = (int) (x + chunk.transform.position.x);
+					int worldY = (int)(y + chunk.transform.position.y);
+					int worldZ = (int) (z + chunk.transform.position.z);
+								
+					//Debug.Log (y / World.columnHeight);
+
+					if (worldY <= Utils.GenerateHeight(worldX, worldZ))
+						chunkData[x,y,z] = new Block (Block.BlockType.GRASS, blockPos, chunk.gameObject, cubeMaterial, this);
+					else
+						chunkData[x,y,z] = new Block (Block.BlockType.AIR, blockPos, chunk.gameObject, cubeMaterial, this);
 
 				}
-
 			}
 		}
 	}
 
 	public void DrawChunk() {
 		for (int z = 0; z < World.chunkSize; z++) {
-			for (int x = 0; x < World.chunkSize; x++) {
-				for (int y = 0; y < World.chunkSize; y++) {
-					Vector3 blockPos = new Vector3 (x, y, z);
-					if (chunkData [x, y, z] != null) {
-						chunkData [x, y, z].Draw ();
-					}
+			for (int y = 0; y < World.chunkSize; y++) {
+				for (int x = 0; x < World.chunkSize; x++) {
+					chunkData [x, y, z].Draw ();
 				}
 			}
 		}
