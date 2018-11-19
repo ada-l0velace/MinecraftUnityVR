@@ -9,6 +9,11 @@ public class Utils {
 	static int octaves = 4;
 	static float persistance = 0.5f;
 
+	public static int GenerateStoneHeight(float x, float z) {
+		float height = Map (0, maxHeight-5, 0, 1, fBM (x * smooth * 2, z * smooth * 2, octaves+1, persistance));
+		return (int)height;
+	}
+
 	public static int GenerateHeight(float x, float z) {
 		float height = Map (0, maxHeight, 0, 1, fBM (x * smooth, z * smooth, octaves, persistance));
 		return (int)height;
@@ -23,8 +28,9 @@ public class Utils {
 		float frequency = 1;
 		float amplitude = 1;
 		float maxValue = 0;
+		float offset = 32000f;
 		for (int i = 0; i < oct; i++) {
-			total += Mathf.PerlinNoise (x * frequency, z * frequency) * amplitude;
+			total += Mathf.PerlinNoise ((x+offset) * frequency, (z+offset) * frequency) * amplitude;
 			maxValue += amplitude;
 
 			amplitude *= pers;
@@ -32,5 +38,17 @@ public class Utils {
 		}
 		return total / maxValue;
 
+	}
+
+	public static float fBM3D(float x, float y, float z, float sm, int oct) {
+		float XY = fBM (x * sm, y * sm, oct, 0.5f);
+		float YZ = fBM (y * sm, z * sm, oct, 0.5f);
+		float XZ = fBM (x * sm, z * sm, oct, 0.5f);
+
+		float YX = fBM (y * sm, x * sm, oct, 0.5f);
+		float ZY = fBM (z * sm, y * sm, oct, 0.5f);
+		float ZX = fBM (z * sm, x * sm, oct, 0.5f);
+
+		return (XY + YZ + XZ + YX + ZY + ZX) / 6.0f;
 	}
 }

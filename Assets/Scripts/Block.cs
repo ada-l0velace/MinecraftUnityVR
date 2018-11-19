@@ -8,7 +8,7 @@ public class Block {
 	public Material material;
 
 	enum Cubeside {BOTTOM, TOP, LEFT, RIGHT, FRONT, BACK};
-	public enum BlockType {GRASS, DIRT, STONE, AIR};
+	public enum BlockType {GRASS, DIRT, STONE, AIR, DIAMOND, REDSTONE, BEDROCK};
 
 	BlockType bType;
 	GameObject parent;
@@ -229,11 +229,34 @@ public class Block {
 		//ItemTexture[] textures = {ItemTexture.Grass};
 		if (bType == BlockType.AIR)
 			return;
-		int[][] b = new int[][] {  new int[] {0,-1,0} ,  new int[] {0,1,0} ,  new int[] {-1,0,0} ,  new int[] {1,0,0},  new int[] {0,0,1}, new int[] {0,0,-1}  };
+		int[][] b = new int[][] { new int[] {0,-1,0} ,  new int[] {0,1,0} ,  new int[] {-1,0,0} ,  new int[] {1,0,0},  new int[] {0,0,1}, new int[] {0,0,-1} };
 		int i = 0;
 		foreach (Cubeside side in Enum.GetValues(typeof(Cubeside))) {
-			if(!HasSolidNeighbour((int)position.x + b[i][0],(int)position.y+ b[i][1],(int)position.z+ b[i][2]))
-				CreateQuad (side, ItemTexture.Grass);
+			if (!HasSolidNeighbour ((int)position.x + b [i] [0], (int)position.y + b [i] [1], (int)position.z + b [i] [2])) {
+				switch (bType) {
+				case BlockType.GRASS:
+					CreateQuad (side, ItemTexture.Grass);
+					break;
+				case BlockType.STONE:
+					CreateQuad (side, ItemTexture.Stone);
+					break;
+				case BlockType.DIRT:
+					CreateQuad (side, ItemTexture.Dirt);
+					break;
+				case BlockType.DIAMOND:
+					CreateQuad (side, ItemTexture.Diamond);
+					break;
+				case BlockType.REDSTONE:
+					CreateQuad (side, ItemTexture.RedStone);
+					break;
+				case BlockType.BEDROCK:
+					CreateQuad (side, ItemTexture.Bedrock);
+					break;
+				default:
+					break;
+				}
+			}
+					
 			i += 1;
 		}
 		//CombineQuads();

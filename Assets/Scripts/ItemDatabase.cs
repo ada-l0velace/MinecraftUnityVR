@@ -89,11 +89,14 @@ public class ItemTexture {
 		this.bottom = all * resoution;
 	}
 
-	public static ItemTexture Grass = new ItemTexture(new Vector2(3f, 15f), new Vector2(3f, 15f), new Vector2(3f, 15f), new Vector2(3f, 15f), new Vector2(0f, 15f), new Vector2(2f, 15f));
+	public static ItemTexture Grass = new ItemTexture(new Vector2(3f, 15f), new Vector2(3f, 15f), new Vector2(3f, 15f), new Vector2(3f, 15f), new Vector2(2f, 6f), new Vector2(2f, 15f));
 	public static ItemTexture Dirt = new ItemTexture(new Vector2(2f, 15f));
 	public static ItemTexture Stone = new ItemTexture(new Vector2(1f, 15f));
 	public static ItemTexture Cobblestone = new ItemTexture(new Vector2(0f, 14f));
 	public static ItemTexture Bedrock = new ItemTexture(new Vector2(1f, 14f));
 	public static ItemTexture TreeTrunk = new ItemTexture(new Vector2(4f, 14f), new Vector2(4f, 14f), new Vector2(4f, 14f), new Vector2(4f, 14f), new Vector2(5f, 14f), new Vector2(5f, 14f));
 	public static ItemTexture TreeLeaves = new ItemTexture(new Vector2(4f, 12f));
+	public static ItemTexture Diamond = new ItemTexture(new Vector2(2f, 12f));
+	public static ItemTexture RedStone = new ItemTexture(new Vector2(3f, 12f));
+
 }

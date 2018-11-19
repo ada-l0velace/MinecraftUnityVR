@@ -32,8 +32,22 @@ public class Chunk {
 								
 					//Debug.Log (y / World.columnHeight);
 
-					if (worldY <= Utils.GenerateHeight(worldX, worldZ))
+					if (worldY == 0)
+						chunkData [x, y, z] = new Block (Block.BlockType.BEDROCK, blockPos, chunk.gameObject, cubeMaterial, this);
+					else if (Utils.fBM3D (worldX, worldY, worldZ, 0.1f, 3) < 0.42f)
+						chunkData [x, y, z] = new Block (Block.BlockType.AIR, blockPos, chunk.gameObject, cubeMaterial, this);
+					else if (worldY <= Utils.GenerateStoneHeight (worldX, worldZ)) {
+						if (Utils.fBM3D (worldX, worldY, worldZ, 0.2f, 2) < 0.38f && worldY < 40)
+							chunkData [x, y, z] = new Block (Block.BlockType.DIAMOND, blockPos, chunk.gameObject, cubeMaterial, this);
+						else if (Utils.fBM3D (worldX, worldY, worldZ, 0.03f, 3) < 0.41f && worldY < 20)
+							chunkData [x, y, z] = new Block (Block.BlockType.REDSTONE, blockPos, chunk.gameObject, cubeMaterial, this);
+						else
+							chunkData [x, y, z] = new Block (Block.BlockType.STONE, blockPos, chunk.gameObject, cubeMaterial, this);
+					}
+					else if (worldY == Utils.GenerateHeight(worldX, worldZ))
 						chunkData[x,y,z] = new Block (Block.BlockType.GRASS, blockPos, chunk.gameObject, cubeMaterial, this);
+					else if (worldY < Utils.GenerateHeight(worldX, worldZ))
+						chunkData[x,y,z] = new Block (Block.BlockType.DIRT, blockPos, chunk.gameObject, cubeMaterial, this);
 					else
 						chunkData[x,y,z] = new Block (Block.BlockType.AIR, blockPos, chunk.gameObject, cubeMaterial, this);
 
@@ -73,6 +87,7 @@ public class Chunk {
 		renderer.material = cubeMaterial;
 
 		MeshCollider collider = chunk.gameObject.AddComponent(typeof(MeshCollider)) as MeshCollider;
+		collider.sharedMesh = chunk.transform.GetComponent<MeshFilter>().mesh;
 		foreach (Transform quad in chunk.transform) {
 			GameObject.Destroy (quad.gameObject);
 		}
