@@ -7,6 +7,8 @@ public class Chunk {
 	public Material cubeMaterial;
 	public Block[,,] chunkData;
 	public GameObject chunk;
+	public enum ChunkStatus {DRAW,DONE,KEEP};
+	public ChunkStatus status;
 
 	// Use this for initialization
 	public Chunk (Vector3 position, Material c) {
@@ -50,7 +52,7 @@ public class Chunk {
 						chunkData[x,y,z] = new Block (Block.BlockType.DIRT, blockPos, chunk.gameObject, cubeMaterial, this);
 					else
 						chunkData[x,y,z] = new Block (Block.BlockType.AIR, blockPos, chunk.gameObject, cubeMaterial, this);
-
+					status = ChunkStatus.DRAW;
 				}
 			}
 		}
