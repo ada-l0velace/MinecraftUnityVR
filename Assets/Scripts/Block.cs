@@ -8,19 +8,21 @@ public class Block {
 	public Material material;
 
 	enum Cubeside {BOTTOM, TOP, LEFT, RIGHT, FRONT, BACK};
-	public enum BlockType {GRASS, DIRT, STONE};
+	public enum BlockType {GRASS, DIRT, STONE, AIR};
 
 	BlockType bType;
 	GameObject parent;
 	Vector3 position;
 	Material cubeMaterial;
 	public bool isSolid;
+	public Chunk owner;
 
-	public Block(BlockType b, Vector3 pos, GameObject p, Material c) {
+	public Block(BlockType b, Vector3 pos, GameObject p, Material c, Chunk o) {
 		bType = b;
 		parent = p;
 		position = pos;
 		cubeMaterial = c;
+		owner = o;
 		isSolid = true;
 	}
 
@@ -48,14 +50,44 @@ public class Block {
 		}
 	}*/
 
+	int ConvertBlockIndexToLocal(int i) {
+		if (i == -1)
+			i = World.chunkSize - 1;
+		else if (i == World.chunkSize)
+			i = 0;
+		return i;
+	}
+
 	public bool HasSolidNeighbour(int x, int y, int z) {
-		Block[,,] chunks = parent.GetComponent<Chunks>().chunkData;
+		Block[,,] chunks;
+
+		// Block in a neighbouring chunk
+		if (x < 0 || x >= World.chunkSize ||
+		    y < 0 || y >= World.chunkSize ||
+		    z < 0 || z >= World.chunkSize) {
+			Vector3 neighbourChunkPos = this.parent.transform.position + new Vector3 ((x - (int)position.x) * World.chunkSize,
+				                            (y - (int)position.y) * World.chunkSize,
+				                            (z - (int)position.z) * World.chunkSize);
+			string nName = World.BuildChunkName (neighbourChunkPos);
+
+			x = ConvertBlockIndexToLocal (x);
+			y = ConvertBlockIndexToLocal (y);
+			z = ConvertBlockIndexToLocal (z);
+
+			Chunk nChunk;
+			if (World.chunks.TryGetValue (nName, out nChunk))
+				chunks = nChunk.chunkData;
+			else
+				return false;
+			
+		} else
+			chunks = owner.chunkData;	
+		
 		try {
-			if (chunks[x,y,z] != null) {
-				return chunks[x,y,z].isSolid;
+			if (chunks [x, y, z] != null) {
+				return chunks [x, y, z].isSolid;
 			}
-		}
-		catch(System.IndexOutOfRangeException ex) {}
+		} catch (System.IndexOutOfRangeException ex) {}
 		return false;
 	}
 
@@ -186,8 +218,8 @@ public class Block {
 		MeshFilter meshFilter = (MeshFilter)quad.AddComponent (typeof(MeshFilter));
 		meshFilter.mesh = mesh;
 
-		MeshRenderer renderer = quad.AddComponent (typeof(MeshRenderer)) as MeshRenderer;
-		renderer.material = cubeMaterial;
+		//MeshRenderer renderer = quad.AddComponent (typeof(MeshRenderer)) as MeshRenderer;
+		//renderer.material = cubeMaterial;
 		//quad.AddComponent(typeof(MeshCollider)) as MeshCollider;
 
 	}
