@@ -46,7 +46,7 @@ public class Chunk {
 		}
 	}
 
-	void DrawChunk() {
+	public void DrawChunk() {
 		for (int z = 0; z < World.chunkSize; z++) {
 			for (int x = 0; x < World.chunkSize; x++) {
 				for (int y = 0; y < World.chunkSize; y++) {
@@ -83,14 +83,6 @@ public class Chunk {
 		foreach (Transform quad in chunk.transform) {
 			GameObject.Destroy (quad.gameObject);
 		}
-	}
-
-	public void GenerateChunk () {
-		//int depth = 30;
-		//int width = 30;
-		//int height = 3;
-		BuildChunk();
-		DrawChunk ();
 	}
 
 }
