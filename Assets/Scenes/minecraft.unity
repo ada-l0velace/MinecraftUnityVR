@@ -6202,6 +6202,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2014688894}
   - component: {fileID: 2014688895}
+  - component: {fileID: 2014688896}
   m_Layer: 0
   m_Name: World
   m_TagString: Untagged
@@ -6236,6 +6237,18 @@ MonoBehaviour:
   player: {fileID: 926209060}
   textureAtlas: {fileID: 2100000, guid: 13dc42ce5bac8434b90777a7ae2795a1, type: 2}
   lastBuildPos: {x: 0, y: 0, z: 0}
+--- !u!114 &2014688896
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 2014688893}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8ac9deec6fe87214cab00461059ce2bc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cam: {fileID: 0}
 --- !u!1 &2018839703
 GameObject:
   m_ObjectHideFlags: 0

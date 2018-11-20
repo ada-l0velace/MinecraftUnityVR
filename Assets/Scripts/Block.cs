@@ -28,6 +28,14 @@ public class Block {
 			isSolid = true;
 	}
 
+	public void SetType(BlockType b) {
+		bType = b;
+		if (bType == BlockType.AIR)
+			isSolid = false;
+		else
+			isSolid = true;
+	}
+
 	/*void CombineQuads() {
 		MeshFilter[] meshFilters = GetComponentsInChildren<MeshFilter>();
 		CombineInstance[] combine = new CombineInstance[meshFilters.Length];
