@@ -17,11 +17,10 @@ public class Block {
 	public bool isSolid;
 	public Chunk owner;
 
-	public Block(BlockType b, Vector3 pos, GameObject p, Material c, Chunk o) {
+	public Block(BlockType b, Vector3 pos, GameObject p, Chunk o) {
 		bType = b;
 		parent = p;
 		position = pos;
-		cubeMaterial = c;
 		owner = o;
 		if(bType == BlockType.AIR)
 			isSolid = false;

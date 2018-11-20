@@ -16,7 +16,7 @@ public class Utils {
 
 	public static int GenerateHeight(float x, float z) {
 		float height = Map (0, maxHeight, 0, 1, fBM (x * smooth, z * smooth, octaves, persistance));
-		return (int)height;
+		return (int)maxHeight;
 	}
 
 	static float Map(float newmin, float newmax, float origmin, float orimax, float value) {
