@@ -95,8 +95,9 @@ public class ItemTexture {
 	public static ItemTexture Cobblestone = new ItemTexture(new Vector2(0f, 14f));
 	public static ItemTexture Bedrock = new ItemTexture(new Vector2(1f, 14f));
 	public static ItemTexture TreeTrunk = new ItemTexture(new Vector2(4f, 14f), new Vector2(4f, 14f), new Vector2(4f, 14f), new Vector2(4f, 14f), new Vector2(5f, 14f), new Vector2(5f, 14f));
-	public static ItemTexture TreeLeaves = new ItemTexture(new Vector2(4f, 12f));
+	public static ItemTexture TreeLeaves = new ItemTexture(new Vector2(1f, 6f));
 	public static ItemTexture Diamond = new ItemTexture(new Vector2(2f, 12f));
 	public static ItemTexture RedStone = new ItemTexture(new Vector2(3f, 12f));
+	public static ItemTexture Water = new ItemTexture(new Vector2(14f, 3f));
 
 }

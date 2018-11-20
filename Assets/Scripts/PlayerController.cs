@@ -71,11 +71,8 @@ public class PlayerController : MonoBehaviour {
 				foreach (string cname in updates) {
 					Chunk c;
 					if (World.chunks.TryGetValue (cname, out c)) {
-						DestroyImmediate (c.chunk.GetComponent<MeshFilter> ());
-						DestroyImmediate (c.chunk.GetComponent<MeshRenderer> ());
-						DestroyImmediate (c.chunk.GetComponent<Collider> ());
 						c.chunkData [x, y, z].SetType (Block.BlockType.AIR);
-						c.DrawChunk ();
+						c.ReDraw ();
 					}
 				}
 			}

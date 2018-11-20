@@ -5,10 +5,21 @@ using UnityEngine;
 
 public class Block {
 
+	public static ItemTexture Grass = new ItemTexture(new Vector2(3f, 15f), new Vector2(3f, 15f), new Vector2(3f, 15f), new Vector2(3f, 15f), new Vector2(2f, 6f), new Vector2(2f, 15f));
+	public static ItemTexture Dirt = new ItemTexture(new Vector2(2f, 15f));
+	public static ItemTexture Stone = new ItemTexture(new Vector2(1f, 15f));
+	public static ItemTexture Cobblestone = new ItemTexture(new Vector2(0f, 14f));
+	public static ItemTexture Bedrock = new ItemTexture(new Vector2(14f, 3f));
+	public static ItemTexture TreeTrunk = new ItemTexture(new Vector2(4f, 14f), new Vector2(4f, 14f), new Vector2(4f, 14f), new Vector2(4f, 14f), new Vector2(5f, 14f), new Vector2(5f, 14f));
+	public static ItemTexture TreeLeaves = new ItemTexture(new Vector2(1f, 6f));
+	public static ItemTexture Diamond = new ItemTexture(new Vector2(2f, 12f));
+	public static ItemTexture RedStone = new ItemTexture(new Vector2(3f, 12f));
+	public static ItemTexture Water = new ItemTexture(new Vector2(14f, 3f));
+
 	public Material material;
 
 	enum Cubeside {BOTTOM, TOP, LEFT, RIGHT, FRONT, BACK};
-	public enum BlockType {GRASS, DIRT, STONE, AIR, DIAMOND, REDSTONE, BEDROCK};
+	public enum BlockType {GRASS, DIRT, STONE, AIR, LEAVES, WOOD, WOODBASE, DIAMOND, REDSTONE, BEDROCK, WATER};
 
 	public BlockType bType;
 	GameObject parent;
@@ -22,62 +33,51 @@ public class Block {
 		parent = p;
 		position = pos;
 		owner = o;
-		if(bType == BlockType.AIR)
-			isSolid = false;
-		else
-			isSolid = true;
+		SetType (bType);
 	}
 
 	public void SetType(BlockType b) {
 		bType = b;
-		if (bType == BlockType.AIR)
+		if (bType == BlockType.AIR || bType == BlockType.WATER)
 			isSolid = false;
 		else
 			isSolid = true;
+
+		if(bType == BlockType.WATER)
+		{
+			parent = owner.fluid.gameObject;
+		}
+		else
+			parent = owner.chunk.gameObject;
 	}
 
-	/*void CombineQuads() {
-		MeshFilter[] meshFilters = GetComponentsInChildren<MeshFilter>();
-		CombineInstance[] combine = new CombineInstance[meshFilters.Length];
-		int i = 0;
-		while (i < meshFilters.Length) {
-			combine[i].mesh = meshFilters[i].sharedMesh;
-			combine [i].transform = meshFilters [i].transform.localToWorldMatrix;
-			i++;
-		}
-
-		MeshFilter mf = (MeshFilter)gameObject.AddComponent (typeof(MeshFilter));
-
-
-		mf.mesh = new Mesh ();
-		mf.mesh.CombineMeshes (combine);
-
-		MeshRenderer renderer = this.gameObject.AddComponent (typeof(MeshRenderer)) as MeshRenderer;
-		renderer.material = material;
-
-		foreach (Transform quad in this.transform) {
-			Destroy (quad.gameObject);
-		}
-	}*/
-
 	int ConvertBlockIndexToLocal(int i) {
-		if (i == -1)
-			i = World.chunkSize - 1;
-		else if (i == World.chunkSize)
-			i = 0;
+		if(i <= -1) 
+			i = World.chunkSize+i; 
+		else if(i >= World.chunkSize) 
+			i = i-World.chunkSize;
 		return i;
 	}
 
-	public bool HasSolidNeighbour(int x, int y, int z) {
+	public Block GetBlock(int x, int y, int z) {
 		Block[,,] chunks;
 
 		// Block in a neighbouring chunk
 		if (x < 0 || x >= World.chunkSize ||
-		    y < 0 || y >= World.chunkSize ||
-		    z < 0 || z >= World.chunkSize) {
-			Vector3 neighbourChunkPos = this.parent.transform.position + new Vector3 ((x - (int)position.x) * World.chunkSize,
-				                            (y - (int)position.y) * World.chunkSize,
-				                            (z - (int)position.z) * World.chunkSize);
+			y < 0 || y >= World.chunkSize ||
+			z < 0 || z >= World.chunkSize) {
+
+			int newX = x, newY = y, newZ = z;
+			if (x < 0 || x >= World.chunkSize)
+				newX = (x - (int)position.x) * World.chunkSize;
+			if (y < 0 || y >= World.chunkSize)
+				newY = (y - (int)position.y) * World.chunkSize;
+			if (z < 0 || z >= World.chunkSize)
+				newZ = (z - (int)position.z) * World.chunkSize;
+			
+			Vector3 neighbourChunkPos = this.parent.transform.position + new Vector3 (newX,
+				newY, newZ);
+
 			string nName = World.BuildChunkName (neighbourChunkPos);
 
 			x = ConvertBlockIndexToLocal (x);
@@ -88,14 +88,23 @@ public class Block {
 			if (World.chunks.TryGetValue (nName, out nChunk))
 				chunks = nChunk.chunkData;
 			else
-				return false;
-			
+				return null;
+
 		} else
 			chunks = owner.chunkData;	
-		
+
 		try {
-			return chunks [x, y, z].isSolid;
+			return chunks [x, y, z];
 		} catch (System.IndexOutOfRangeException ex) {}
+		return null;
+	}
+
+
+	public bool HasSolidNeighbour(int x, int y, int z) {
+		Block b = GetBlock(x,y,z);
+		if(b != null)
+			return (b.isSolid || b.bType == bType);
+
 		return false;
 	}
 
@@ -259,6 +268,18 @@ public class Block {
 				case BlockType.BEDROCK:
 					CreateQuad (side, ItemTexture.Bedrock);
 					break;
+				case BlockType.WATER:
+					CreateQuad (side, ItemTexture.Water);
+					break;
+				case BlockType.WOOD:
+					CreateQuad (side, ItemTexture.TreeTrunk);
+					break;
+				case BlockType.WOODBASE:
+					CreateQuad (side, ItemTexture.TreeTrunk);
+					break;
+				case BlockType.LEAVES:
+					CreateQuad (side, ItemTexture.TreeLeaves);
+					break;
 				default:
 					break;
 				}
@@ -267,10 +288,5 @@ public class Block {
 			i += 1;
 		}
 		//CombineQuads();
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		
 	}
 }

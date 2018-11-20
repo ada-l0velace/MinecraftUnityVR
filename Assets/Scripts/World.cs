@@ -8,10 +8,12 @@ public class World : MonoBehaviour {
 
 	public GameObject player;
 	public Material textureAtlas;
+	public Material fluidTexture;
 
 	public static uint maxCoroutines = 1000;
-	public static int chunkSize = 8;
+	public static int chunkSize = 16;
 	public static int radius = 4;
+
 
 	CoroutineQueue queue;
 	public static ConcurrentDictionary<string, Chunk> chunks;
@@ -32,7 +34,7 @@ public class World : MonoBehaviour {
 		Chunk c;
 
 		if (!chunks.TryGetValue (n, out c)) {
-			c = new Chunk (chunkPostion, textureAtlas);
+			c = new Chunk (chunkPostion, textureAtlas, fluidTexture);
 			c.chunk.transform.parent = this.transform;
 			chunks.TryAdd (c.chunk.name, c);
 		}
@@ -154,6 +156,6 @@ public class World : MonoBehaviour {
 			firstbuild = false;
 		}
 		queue.Run(DrawChunks ());
-		queue.Run(RemoveOldChunks ());
+		//queue.Run(RemoveOldChunks ());
 	}
 }
