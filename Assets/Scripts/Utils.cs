@@ -25,7 +25,7 @@ public class Utils {
 
 	static float fBM(float x, float z, int oct, float pers) {
 		float total = 0;
-		float frequency = 1;
+		float frequency = 0.5f;
 		float amplitude = 1;
 		float maxValue = 0;
 		float offset = 32000f;

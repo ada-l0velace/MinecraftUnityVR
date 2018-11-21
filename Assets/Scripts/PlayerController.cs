@@ -39,7 +39,7 @@ public class PlayerController : MonoBehaviour {
 			Vector3 upward = vrCamera.TransformDirection (Vector3.up);
 			cc.Move (speed * 30 * upward * Time.deltaTime);
 		}
-		else if (Input.GetKey("joystick button 0")) {
+		else if (Input.GetKeyDown("joystick button 0")) {
 			RaycastHit hit;
 			if (Physics.Raycast (vrCamera.transform.position, vrCamera.TransformDirection (Vector3.forward), out hit, 10)) {
 				Vector3 hitBlock = hit.point - hit.normal / 2.0f;

@@ -137,7 +137,7 @@ public class Chunk {
 					} else if (worldY < surfaceHeight)
 						chunkData [x, y, z] = new Block (Block.BlockType.DIRT, pos, 
 							chunk.gameObject, this);
-					else if (worldY < 70) {
+					else if (worldY < 65) {
 						chunkData [x, y, z] = new Block (Block.BlockType.WATER, pos, 
 							fluid.gameObject, this);
 					}
