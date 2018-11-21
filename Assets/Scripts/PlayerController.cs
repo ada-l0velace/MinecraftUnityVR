@@ -7,8 +7,9 @@ public class PlayerController : MonoBehaviour {
 	public float forwardAngle = 30.0f;
 	public float backwardAngle = 330.0f;
 	public float speed = 0.5f;
-	public bool moveForward;
-	public bool moveBackward;
+	//public bool moveForward;
+	//public bool moveBackward;
+    //public float dpadYaxis;
 	private CharacterController cc;
 	// Use this for initialization
 	void Start () {
@@ -21,23 +22,24 @@ public class PlayerController : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		moveForward = GvrControllerInput.IsTouching;
-		moveBackward = false;
+        //moveForward = GvrControllerInput.IsTouching;
+        //moveForward = Input.GetKey("joystick button 7");
+        //moveBackward = Input.GetKey("joystick button 6");
 		//Debug.Log (vrCamera.eulerAngles.x + moveBackward.ToString() + moveForward.ToString());
-		if (moveForward && cc.isGrounded) {
+		if (Input.GetKey("joystick button 5") && cc.isGrounded) {
 			Vector3 forward = vrCamera.TransformDirection (Vector3.forward );
 			forward.y = 0;
 			cc.Move (speed * forward * Time.deltaTime);
-		} else if (moveBackward && cc.isGrounded) {
+		} else if (Input.GetKey("joystick button 4") && cc.isGrounded) {
 			Vector3 backward = vrCamera.TransformDirection (Vector3.back);
 			backward.y = 0;
-			//cc.Move (speed * backward * Time.deltaTime);
+			cc.Move (speed * backward * Time.deltaTime);
 		}
-		else if (GvrControllerInput.AppButtonUp && cc.isGrounded){
+		else if (Input.GetKeyDown("joystick button 1") && cc.isGrounded){
 			Vector3 upward = vrCamera.TransformDirection (Vector3.up);
-			cc.Move (speed * 30* upward * Time.deltaTime);
+			cc.Move (speed * 30 * upward * Time.deltaTime);
 		}
-		else if (GvrControllerInput.ClickButtonUp) {
+		else if (Input.GetKey("joystick button 0")) {
 			RaycastHit hit;
 			if (Physics.Raycast (vrCamera.transform.position, vrCamera.TransformDirection (Vector3.forward), out hit, 10)) {
 				Vector3 hitBlock = hit.point - hit.normal / 2.0f;
