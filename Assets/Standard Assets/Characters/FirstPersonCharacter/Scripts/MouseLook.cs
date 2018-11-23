@@ -23,14 +23,14 @@ namespace UnityStandardAssets.Characters.FirstPerson
 
         public void Init(Transform character, Transform camera)
         {
-            m_CharacterTargetRot = character.localRotation;
-            m_CameraTargetRot = camera.localRotation;
+           /*m_CharacterTargetRot = character.localRotation;
+           m_CameraTargetRot = camera.localRotation;*/
         }
 
 
         public void LookRotation(Transform character, Transform camera)
         {
-            float yRot = CrossPlatformInputManager.GetAxis("Mouse X") * XSensitivity;
+            /*float yRot = CrossPlatformInputManager.GetAxis("Mouse X") * XSensitivity;
             float xRot = CrossPlatformInputManager.GetAxis("Mouse Y") * YSensitivity;
 
             m_CharacterTargetRot *= Quaternion.Euler (0f, yRot, 0f);
@@ -50,7 +50,7 @@ namespace UnityStandardAssets.Characters.FirstPerson
             {
                 character.localRotation = m_CharacterTargetRot;
                 camera.localRotation = m_CameraTargetRot;
-            }
+            }*/
 
             UpdateCursorLock();
         }

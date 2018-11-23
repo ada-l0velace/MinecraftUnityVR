@@ -54,7 +54,7 @@ namespace UnityStandardAssets.Characters.FirstPerson
             m_NextStep = m_StepCycle/2f;
             m_Jumping = false;
             m_AudioSource = GetComponent<AudioSource>();
-			m_MouseLook.Init(transform , m_Camera.transform);
+			//m_MouseLook.Init(transform , m_Camera.transform);
         }
 
 
@@ -97,11 +97,11 @@ namespace UnityStandardAssets.Characters.FirstPerson
             float speed;
             GetInput(out speed);
             // always move along the camera forward as it is the direction that it being aimed at
-            Vector3 desiredMove = transform.forward*m_Input.y + transform.right*m_Input.x;
+			Vector3 desiredMove =  m_Camera.transform.TransformDirection(Vector3.forward)*m_Input.y +  m_Camera.transform.TransformDirection(Vector3.right)*m_Input.x;
 
             // get a normal for the surface that is being touched to move along it
             RaycastHit hitInfo;
-            Physics.SphereCast(transform.position, m_CharacterController.radius, Vector3.down, out hitInfo,
+			Physics.SphereCast(transform.position, m_CharacterController.radius,  Vector3.down, out hitInfo,
                                m_CharacterController.height/2f, Physics.AllLayers, QueryTriggerInteraction.Ignore);
             desiredMove = Vector3.ProjectOnPlane(desiredMove, hitInfo.normal).normalized;
 
@@ -130,7 +130,7 @@ namespace UnityStandardAssets.Characters.FirstPerson
             ProgressStepCycle(speed);
             UpdateCameraPosition(speed);
 
-            m_MouseLook.UpdateCursorLock();
+            //m_MouseLook.UpdateCursorLock();
         }
 
 
@@ -216,7 +216,11 @@ namespace UnityStandardAssets.Characters.FirstPerson
 #endif
             // set the desired speed to be walking or running
             speed = m_IsWalking ? m_WalkSpeed : m_RunSpeed;
-            m_Input = new Vector2(horizontal, vertical);
+			Vector3 n;
+
+
+				
+			m_Input = new Vector2(horizontal, vertical);
 
             // normalize input if it exceeds 1 in combined length:
             if (m_Input.sqrMagnitude > 1)

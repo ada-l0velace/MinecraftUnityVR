@@ -206,11 +206,11 @@ public class Chunk {
 		UVs.Clear();
 		Tris.Clear();
 
-		/*Verts_w.Clear();
+		Verts_w.Clear();
 		Norms_w.Clear();
 		UVs_w.Clear();
 		Tris_w.Clear();
-		*/
+
 		/*if (!treesCreated) {
 			for (int z = 0; z < World.chunkSize; z++)
 				for (int y = 0; y < World.chunkSize; y++)
