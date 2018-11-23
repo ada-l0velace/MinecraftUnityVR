@@ -162,9 +162,11 @@ public class Chunk {
 							chunk.gameObject, this);
 					}
 
-					if(worldY < 70 && worldY > 40 && chunkData[x, y, z].bType == Block.BlockType.AIR)
-						chunkData[x,y,z] = new Block(Block.BlockType.WATER, pos, 
+					if (worldY < 70 && worldY > 40 && chunkData [x, y, z].bType == Block.BlockType.AIR) {
+						fluid.gameObject.transform.parent = World.Instance.transform;
+						chunkData [x, y, z] = new Block (Block.BlockType.WATER, pos, 
 							fluid.gameObject, this);
+					}
 
 					status = ChunkStatus.DRAW;
 
@@ -211,14 +213,14 @@ public class Chunk {
 		UVs_w.Clear();
 		Tris_w.Clear();
 
-		/*if (!treesCreated) {
+		if (!treesCreated) {
 			for (int z = 0; z < World.chunkSize; z++)
 				for (int y = 0; y < World.chunkSize; y++)
 					for (int x = 0; x < World.chunkSize; x++) {
 						BuildTrees (chunkData [x, y, z], x, y, z);
 					}
 			treesCreated = true;
-		}*/
+		}
 
 		for (int z = 0; z < World.chunkSize; z++)
 			for (int y = 0; y < World.chunkSize; y++)

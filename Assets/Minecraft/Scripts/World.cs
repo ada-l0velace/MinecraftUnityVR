@@ -49,7 +49,9 @@ public class World : MonoBehaviour {
 		if (!chunks.TryGetValue (n, out c)) {
 			c = new Chunk (chunkPostion, textureAtlas, fluidTexture);
 			c.chunk.transform.parent = this.transform;
+			c.fluid.transform.parent = this.transform;
 			chunks.TryAdd (c.chunk.name, c);
+			//chunks.TryAdd (c.fluid.name, c);
 		}
 	}
 
@@ -167,14 +169,17 @@ public class World : MonoBehaviour {
 		for (int i = 0; i < toRemove.Count; i++) {
 			string n = toRemove [i];
 			Chunk c;
+			Debug.Log (n);
 			if (chunks.TryGetValue (n, out c)) {
-				Destroy (c.chunk);
+				
+				Destroy(c.chunk);
+				Destroy(c.fluid);
 				c.Save ();
 				chunks.TryRemove (n, out c);
-				toRemove.RemoveAt(i);
 				yield return null;
 			}
 		}
+		toRemove.Clear ();
 	}
 
 	public void BuildNearPlayer() {
