@@ -36,17 +36,9 @@ public class PlayerController : MonoBehaviour {
 		}
 		else if (Input.GetKeyDown("joystick button 1") && cc.isGrounded){
 			Vector3 upward = vrCamera.TransformDirection (Vector3.up);
-<<<<<<< HEAD:Assets/Minecraft/Scripts/PlayerController.cs
-			cc.Move (15 * speed* upward * Time.deltaTime);
-		}
-
-
-		else if (GvrControllerInput.ClickButtonDown) {
-=======
 			cc.Move (speed * 30 * upward * Time.deltaTime);
 		}
 		else if (Input.GetKeyDown("joystick button 0")) {
->>>>>>> c5ab4b23ecf1efb1a2fd035998901274191a36eb:Assets/Scripts/PlayerController.cs
 			RaycastHit hit;
 			//Debug.DrawRay (vrCamera.transform.position, vrCamera.TransformDirection (Vector3.forward)*1);
 			if (Physics.Raycast (vrCamera.transform.position, vrCamera.TransformDirection (Vector3.forward), out hit, 10)) {
