@@ -32,6 +32,7 @@ public class Chunk {
 	public Material fluidMaterial;
 	public Block[,,] chunkData;
 	public GameObject chunk;
+	public ChunkMB mb;
 	public GameObject fluid;
 	public enum ChunkStatus {DRAW,DONE,KEEP};
 	public ChunkStatus status;
@@ -102,7 +103,8 @@ public class Chunk {
 		chunk.transform.position = position;
 		fluid = new GameObject (World.BuildChunkName(position) + "_F");
 		fluid.transform.position = position;
-
+		mb = chunk.AddComponent<ChunkMB> ();
+		mb.SetOwner (this);
 		cubeMaterial = c;
 		fluidMaterial = t;
 		BuildChunk ();

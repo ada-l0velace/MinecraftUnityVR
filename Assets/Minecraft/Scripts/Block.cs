@@ -54,6 +54,12 @@ public class Block {
 			parent = owner.chunk.gameObject;
 	}
 
+	public virtual void Reset() {
+		health = CrackType.NOCRACK;
+		current_health = max_health;
+		owner.ReDraw ();
+	}
+
 	int ConvertBlockIndexToLocal(int i) {
 		if(i <= -1) 
 			i = World.chunkSize+i; 
@@ -105,6 +111,11 @@ public class Block {
 	public virtual bool HitBlock() {
 		current_health--;
 		health++;
+
+		if (current_health+1 == max_health) {
+			owner.mb.StartCoroutine (owner.mb.HealBlock (position));
+		}
+
 		if (current_health <= 0) {
 			owner.chunkData [(int)position.x, (int)position.y, (int)position.z] = new Air (position, owner);
 			owner.ReDraw ();
