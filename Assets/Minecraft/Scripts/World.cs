@@ -12,7 +12,7 @@ public class World : MonoBehaviour {
 
 	public static uint maxCoroutines = 5000;
 	public static int chunkSize = 8;
-	public static int radius = 7;
+	public static int radius = 5;
 
 	public static Vector3[] allNormals = new Vector3[6];
 	public static Vector3[,,] allVertices = new Vector3[chunkSize+1,chunkSize+1,chunkSize+1];
@@ -101,9 +101,6 @@ public class World : MonoBehaviour {
 	}
 
 	public static Block GetWorldBlock(Vector3 pos) {
-		int x = ConvertBlockIndexToLocal((int)pos.x);
-		int y;
-		int z;
 		int cx;
 		int cy;
 		int cz;
@@ -134,12 +131,12 @@ public class World : MonoBehaviour {
 
 		string cn = BuildChunkName(new Vector3(cx,cy,cz));
 		Chunk c;
-		Debug.Log ("Mathf.Round(pos.x) -> " + Mathf.Round (pos.x) + " Mathf.Round(pos.x)/(float)chunkSize -> " + Mathf.Round (pos.x) / (float)chunkSize + " cx ->" + cx);
+		/*Debug.Log ("Mathf.Round(pos.x) -> " + Mathf.Round (pos.x) + " Mathf.Round(pos.x)/(float)chunkSize -> " + Mathf.Round (pos.x) / (float)chunkSize + " cx ->" + cx);
 		Debug.Log ("Mathf.Round(pos.y) -> " + Mathf.Round (pos.y) + " Mathf.Round(pos.y)/(float)chunkSize -> " + Mathf.Round (pos.x) / (float)chunkSize + " cy ->" + cx);
 		Debug.Log ("Mathf.Round(pos.z) -> " + Mathf.Round (pos.z) + " Mathf.Round(pos.z)/(float)chunkSize -> " + Mathf.Round (pos.x) / (float)chunkSize + " cz ->" + cx);
 		Debug.Log("World Hit: " + pos);
 		Debug.Log("Chunk Hit: " + cn);
-		Debug.Log("Block " + blx + " " + bly + " " + blz);
+		Debug.Log("Block " + blx + " " + bly + " " + blz);*/
 
 		if(chunks.TryGetValue(cn, out c)) {
 			//Debug.Log (c.chunkData[blx, bly, blz].bType);
@@ -169,7 +166,7 @@ public class World : MonoBehaviour {
 		for (int i = 0; i < toRemove.Count; i++) {
 			string n = toRemove [i];
 			Chunk c;
-			Debug.Log (n);
+			//Debug.Log (n);
 			if (chunks.TryGetValue (n, out c)) {
 				
 				Destroy(c.chunk);
@@ -251,7 +248,7 @@ public class World : MonoBehaviour {
 			if (!player.activeSelf) {
 				firstbuild = false;
 				loadingCam.SetActive (false);
-				Debug.Log("Built in " + (Time.time - startTime));
+				/*Debug.Log("Built in " + (Time.time - startTime));*/
 				player.SetActive (true);
 			}
 		}

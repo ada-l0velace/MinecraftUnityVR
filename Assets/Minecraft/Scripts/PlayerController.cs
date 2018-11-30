@@ -14,10 +14,6 @@ public class PlayerController : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		cc = GetComponent<CharacterController>();
-		bool bButtonDown_app = GvrControllerInput.AppButton;
-		bool bButtonDown_touch = GvrControllerInput.ClickButton;
-		bool bTouchingPad = GvrControllerInput.IsTouching;
-		Vector2 vTouchPos = GvrControllerInput.TouchPos;
 	}
 	
 	// Update is called once per frame

@@ -9,19 +9,27 @@ public class Block {
 
 	public Material material;
 
-	enum Cubeside {BOTTOM, TOP, LEFT, RIGHT, FRONT, BACK};
+	protected enum Cubeside {BOTTOM, TOP, LEFT, RIGHT, FRONT, BACK};
 	public enum BlockType {GRASS, DIRT, STONE, AIR, LEAVES, WOOD, WOODBASE, DIAMOND, REDSTONE, BEDROCK, WATER};
+	public enum CrackType {NOCRACK, CRACK1, CRACK2, CRACK3, CRACK4}
 
+	public ItemTexture texture;
 	public BlockType bType;
-	GameObject parent;
+	protected GameObject parent;
 	public Vector3 position;
 	Material cubeMaterial;
 	public bool isSolid;
 	public Chunk owner;
 
+	public CrackType health;
+
+	public int current_health = 0;
+	public int max_health;
+
 
 
 	public Block(BlockType b, Vector3 pos, GameObject p, Chunk o) {
+		max_health = 4;
 		bType = b;
 		owner = o;
 		parent = p;
@@ -29,12 +37,15 @@ public class Block {
 		SetType(bType);
 	}
 
-	public void SetType(BlockType b) {
+	public virtual void SetType(BlockType b) {
 		bType = b;
 		if (bType == BlockType.AIR || bType == BlockType.WATER)
 			isSolid = false;
 		else
 			isSolid = true;
+
+		health = CrackType.NOCRACK;
+		current_health = max_health;
 
 		if(bType == BlockType.WATER) {
 			parent = owner.fluid.gameObject;
@@ -87,10 +98,21 @@ public class Block {
 
 		try {
 			return chunks [x, y, z];
-		} catch (System.IndexOutOfRangeException ex) {}
+		} catch (System.IndexOutOfRangeException ex) { Debug.Log (ex.Message);}
 		return null;
 	}
 
+	public virtual bool HitBlock() {
+		current_health--;
+		health++;
+		if (current_health <= 0) {
+			owner.chunkData [(int)position.x, (int)position.y, (int)position.z] = new Air (position, owner);
+			owner.ReDraw ();
+			return true;
+		}
+		owner.ReDraw ();
+		return false;
+	}
 
 	public bool HasSolidNeighbour(int x, int y, int z) {
 		Block b = GetBlock(x,y,z);
@@ -101,7 +123,7 @@ public class Block {
 	}
 		
 
-	void CreateQuad(Cubeside side,List<Vector3> v, List<Vector3> n, List<Vector2> u, List<int> t, ItemTexture texture) {
+	protected void CreateQuad(Cubeside side,List<Vector3> v, List<Vector3> n, List<Vector2> u, List<Vector2> su, List<int> t, ItemTexture texture) {
 		
 		float resolution = 0.0625f;
 
@@ -198,55 +220,20 @@ public class Block {
 				break;
 		}
 
+		su.Add(uv11+ItemTexture.Cracks[(int)(health)].back); su.Add(uv01+ItemTexture.Cracks[(int)(health)].back); su.Add(uv00+ItemTexture.Cracks[(int)(health)].back);su.Add(uv10+ItemTexture.Cracks[(int)(health)].back);
+
 	}
 	// Use this for initialization
-	public void Draw (List<Vector3> v, List<Vector3> n, List<Vector2> u, List<int> t, List<Vector3> v_w, List<Vector3> n_w, List<Vector2> u_w, List<int> t_w) {
-		//ItemTexture[] textures = {ItemTexture.Grass};
-
-		//draw blocks
-
+	public virtual void Draw (List<Vector3> v, List<Vector3> n, List<Vector2> u, List<Vector2> su, List<int> t, List<Vector3> v_w, List<Vector3> n_w, List<Vector2> u_w, List<Vector2> su_w, List<int> t_w) {
 		if (bType == BlockType.AIR)
 			return;
+		
 		int[][] b = new int[][] { new int[] {0,-1,0} ,  new int[] {0,1,0} ,  new int[] {-1,0,0} ,  new int[] {1,0,0},  new int[] {0,0,1}, new int[] {0,0,-1} };
 		int i = 0;
 		foreach (Cubeside side in Enum.GetValues(typeof(Cubeside))) {
 			if (!HasSolidNeighbour ((int)position.x + b [i] [0], (int)position.y + b [i] [1], (int)position.z + b [i] [2])) {
-				switch (bType) {
-				case BlockType.GRASS:
-					CreateQuad (side, v, n, u, t, ItemTexture.Grass);
-					break;
-				case BlockType.STONE:
-					CreateQuad (side, v, n, u, t, ItemTexture.Stone);
-					break;
-				case BlockType.DIRT:
-					CreateQuad (side, v, n, u, t, ItemTexture.Dirt);
-					break;
-				case BlockType.DIAMOND:
-					CreateQuad (side, v, n, u, t, ItemTexture.Diamond);
-					break;
-				case BlockType.REDSTONE:
-					CreateQuad (side, v, n, u, t, ItemTexture.RedStone);
-					break;
-				case BlockType.BEDROCK:
-					CreateQuad (side, v, n, u, t, ItemTexture.Bedrock);
-					break;
-				case BlockType.WATER:
-					CreateQuad (side, v_w, n_w, u_w, t_w, ItemTexture.Water);
-					break;
-				case BlockType.WOOD:
-					CreateQuad (side, v, n, u, t, ItemTexture.TreeTrunk);
-					break;
-				case BlockType.WOODBASE:
-					CreateQuad (side, v, n, u, t, ItemTexture.TreeTrunk);
-					break;
-				case BlockType.LEAVES:
-					CreateQuad (side, v, n, u, t, ItemTexture.TreeLeaves);
-					break;
-				default:
-					break;
-				}
+				CreateQuad (side, v, n, u, su, t, texture);
 			}
-					
 			i += 1;
 		}
 		//CombineQuads();

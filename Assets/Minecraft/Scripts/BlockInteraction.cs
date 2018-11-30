@@ -13,7 +13,7 @@ public class BlockInteraction : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		if (GvrControllerInput.ClickButtonDown) {
+		if (Input.GetKeyDown("joystick button 0")) {
 			RaycastHit hit;
 			//Debug.DrawRay (vrCamera.transform.position, vrCamera.TransformDirection (Vector3.forward)*1);
 			if (Physics.Raycast (vrCamera.transform.position, vrCamera.TransformDirection (Vector3.forward), out hit, 10)) {
@@ -24,36 +24,40 @@ public class BlockInteraction : MonoBehaviour {
 				int y = (int)b.position.y;
 				int z = (int)b.position.z;
 
-				List<string> updates = new List<string> ();
-				float thisChunkx = hit.collider.gameObject.transform.position.x;
-				float thisChunky = hit.collider.gameObject.transform.position.y;
-				float thisChunkz = hit.collider.gameObject.transform.position.z;
+				Chunk hitc;
 
-				updates.Add (hit.collider.gameObject.name);
-				if (x == 0)
-					updates.Add (World.BuildChunkName (new Vector3 (thisChunkx - World.chunkSize, thisChunky, thisChunkz)));
-				if (x == World.chunkSize - 1)
-					updates.Add (World.BuildChunkName (new Vector3 (thisChunkx + World.chunkSize, thisChunky, thisChunkz)));
+				if (World.chunks.TryGetValue (hit.collider.gameObject.name, out hitc) && hitc.chunkData[x,y,z].HitBlock()) {
+					List<string> updates = new List<string> ();
 
-				if (y == 0)
-					updates.Add (World.BuildChunkName (new Vector3 (thisChunkx, thisChunky - World.chunkSize, thisChunkz)));
-				if (y == World.chunkSize - 1)
-					updates.Add (World.BuildChunkName (new Vector3 (thisChunkx, thisChunky + World.chunkSize, thisChunkz)));
+					float thisChunkx = hitc.chunkData[x,y,z].position.x;
+					float thisChunky = hitc.chunkData[x,y,z].position.y;
+					float thisChunkz = hitc.chunkData[x,y,z].position.z;
 
-				if (z == 0)
-					updates.Add (World.BuildChunkName (new Vector3 (thisChunkx, thisChunky, thisChunkz - World.chunkSize)));
-				if (z == World.chunkSize - 1)
-					updates.Add (World.BuildChunkName (new Vector3 (thisChunkx, thisChunky, thisChunkz + World.chunkSize)));
+					if (x == 0)
+						updates.Add (World.BuildChunkName (new Vector3 (thisChunkx - World.chunkSize, thisChunky, thisChunkz)));
+					if (x == World.chunkSize - 1)
+						updates.Add (World.BuildChunkName (new Vector3 (thisChunkx + World.chunkSize, thisChunky, thisChunkz)));
 
-				foreach (string cname in updates) {
-					Chunk c;
-					if (World.chunks.TryGetValue (cname, out c)) {
-						//Debug.Log (x + " " + y + " " + z + " "+ hit.collider.gameObject.name + " "+ hitBlock.ToString() + " "+  hit.collider.gameObject.transform.position.ToString());
-						//Debug.Log (c.chunkData[x,y,z].bType.ToString());
-						b.SetType (Block.BlockType.AIR);
-						c.ReDraw ();
+					if (y == 0)
+						updates.Add (World.BuildChunkName (new Vector3 (thisChunkx, thisChunky - World.chunkSize, thisChunkz)));
+					if (y == World.chunkSize - 1)
+						updates.Add (World.BuildChunkName (new Vector3 (thisChunkx, thisChunky + World.chunkSize, thisChunkz)));
+
+					if (z == 0)
+						updates.Add (World.BuildChunkName (new Vector3 (thisChunkx, thisChunky, thisChunkz - World.chunkSize)));
+					if (z == World.chunkSize - 1)
+						updates.Add (World.BuildChunkName (new Vector3 (thisChunkx, thisChunky, thisChunkz + World.chunkSize)));
+
+					foreach (string cname in updates) {
+						Chunk c;
+						if (World.chunks.TryGetValue (cname, out c)) {
+							//Debug.Log (x + " " + y + " " + z + " "+ hit.collider.gameObject.name + " "+ hitBlock.ToString() + " "+  hit.collider.gameObject.transform.position.ToString());
+							//Debug.Log (c.chunkData[x,y,z].bType.ToString());
+							c.ReDraw ();
+						}
 					}
 				}
+
 			}
 		}
 	}

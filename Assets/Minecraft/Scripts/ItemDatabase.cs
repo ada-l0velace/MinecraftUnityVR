@@ -100,4 +100,12 @@ public class ItemTexture {
 	public static ItemTexture RedStone = new ItemTexture(new Vector2(3f, 12f));
 	public static ItemTexture Water = new ItemTexture(new Vector2(14f, 3f));
 
+	public static ItemTexture NoCrack = new ItemTexture(new Vector2(0f, 1f));
+	public static ItemTexture Crack1 = new ItemTexture(new Vector2(0f, 0f));
+	public static ItemTexture Crack2 = new ItemTexture(new Vector2(1f, 0f));
+	public static ItemTexture Crack3 = new ItemTexture(new Vector2(2f, 0f));
+	public static ItemTexture Crack4 = new ItemTexture(new Vector2(3f, 0f));
+
+	public static ItemTexture []Cracks  = {NoCrack, Crack1, Crack2, Crack3, Crack4};
+
 }
