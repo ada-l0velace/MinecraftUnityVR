@@ -247,6 +247,7 @@ public class Chunk {
 		collider.sharedMesh = chunk.transform.GetComponent<MeshFilter> ().mesh;
 		//if(waterChunk)
 		CombineQuads2(fluid.gameObject, Verts_w, Norms_w, UVs_w, SUVs_w, Tris_w , fluidMaterial);
+		fluid.gameObject.AddComponent<UVScroller> ();
 		//CombineQuads(fluid.gameObject, fluidMaterial);
 
 		//CombineTwoMeshes (chunk.gameObject, fluid.gameObject);

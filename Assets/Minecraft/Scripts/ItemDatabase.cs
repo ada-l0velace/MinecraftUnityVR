@@ -98,7 +98,7 @@ public class ItemTexture {
 	public static ItemTexture TreeLeaves = new ItemTexture(new Vector2(1f, 6f));
 	public static ItemTexture Diamond = new ItemTexture(new Vector2(2f, 12f));
 	public static ItemTexture RedStone = new ItemTexture(new Vector2(3f, 12f));
-	public static ItemTexture Water = new ItemTexture(new Vector2(14f, 3f));
+	public static ItemTexture Water = new ItemTexture(new Vector2(14f, 2f), new Vector2(14f, 2f),new Vector2(14f, 2f),new Vector2(14f, 2f), new Vector2(14f, 2f), new Vector2(14f, 2f));
 
 	public static ItemTexture NoCrack = new ItemTexture(new Vector2(0f, 1f));
 	public static ItemTexture Crack1 = new ItemTexture(new Vector2(0f, 0f));
