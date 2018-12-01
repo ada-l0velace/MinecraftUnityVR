@@ -66,7 +66,7 @@ namespace UnityStandardAssets.Characters.FirstPerson
             if (!m_Jump)
             {
                 //m_Jump = CrossPlatformInputManager.GetButtonDown("Jump");
-				m_Jump = Input.GetKey("joystick button 4");
+				m_Jump = Input.GetKeyDown("joystick button 4");
             }
 
             if (!m_PreviouslyGrounded && m_CharacterController.isGrounded)
