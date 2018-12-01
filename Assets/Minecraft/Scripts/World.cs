@@ -108,42 +108,44 @@ public class World : MonoBehaviour {
 		if (pos.x >= 0) {
 			cx = (int)(Mathf.Round (pos.x - 0.5f) / (float)chunkSize) * chunkSize;
 		} else {
-			cx = (int)(Mathf.Round (pos.x + 0.5f) / (float)chunkSize) * chunkSize - chunkSize;
+			cx = (int)(Mathf.Round (pos.x + 0.5f- chunkSize) / (float)chunkSize) * chunkSize ;
 		}
 		if (pos.y >= 0) {
 			cy = (int)(Mathf.Round (pos.y - 0.5f) / (float)chunkSize) * chunkSize;
 		} else {
-			cy = (int)((int)Mathf.Round (pos.y + 0.5f) / (float)chunkSize) * chunkSize - chunkSize;
+			cy = (int)((int)Mathf.Round (pos.y + 0.5f - chunkSize) / (float)chunkSize) * chunkSize ;
 		}
 		if (pos.z >= 0) {
 			cz = (int)(Mathf.Round (pos.z - 0.5f) / (float)chunkSize) * chunkSize;
 		} else {
-			cz = (int)(Mathf.Round (pos.z + 0.5f) / (float)chunkSize) * chunkSize - chunkSize;
+			cz = (int)(Mathf.Round (pos.z + 0.5f- chunkSize) / (float)chunkSize) * chunkSize ;
 		}
-		int blx = (int) (Mathf.Round(pos.x-0.5f) - cx);
-		int bly = (int) (Mathf.Round(pos.y-0.5f) - cy);
-		int blz = (int) (Mathf.Round(pos.z-0.5f) - cz);
+		int blx = (int) Mathf.Abs((float)Mathf.Round(pos.x-0.5f) - cx);
+		int bly = (int) Mathf.Abs((float)Mathf.Round(pos.y-0.5f) - cy);
+		int blz = (int) Mathf.Abs((float)Mathf.Round(pos.z-0.5f) - cz);
+		//Debug.Log("Block " + blx + " " + bly + " " + blz);
 
-		blx = ConvertBlockIndexToLocal(blx);
-		bly = ConvertBlockIndexToLocal(bly);
-		blz = ConvertBlockIndexToLocal(blz);
+		//blx = ConvertBlockIndexToLocal(blx);
+		//bly = ConvertBlockIndexToLocal(bly);
+		//blz = ConvertBlockIndexToLocal(blz);
 
 
 		string cn = BuildChunkName(new Vector3(cx,cy,cz));
 		Chunk c;
-		/*Debug.Log ("Mathf.Round(pos.x) -> " + Mathf.Round (pos.x) + " Mathf.Round(pos.x)/(float)chunkSize -> " + Mathf.Round (pos.x) / (float)chunkSize + " cx ->" + cx);
-		Debug.Log ("Mathf.Round(pos.y) -> " + Mathf.Round (pos.y) + " Mathf.Round(pos.y)/(float)chunkSize -> " + Mathf.Round (pos.x) / (float)chunkSize + " cy ->" + cx);
-		Debug.Log ("Mathf.Round(pos.z) -> " + Mathf.Round (pos.z) + " Mathf.Round(pos.z)/(float)chunkSize -> " + Mathf.Round (pos.x) / (float)chunkSize + " cz ->" + cx);
-		Debug.Log("World Hit: " + pos);
-		Debug.Log("Chunk Hit: " + cn);
-		Debug.Log("Block " + blx + " " + bly + " " + blz);*/
+		//Debug.Log ("Mathf.Round(pos.x) -> " + Mathf.Round (pos.x) + " Mathf.Round(pos.x)/(float)chunkSize -> " + Mathf.Round (pos.x) / (float)chunkSize + " cx ->" + cx);
+		//Debug.Log ("Mathf.Round(pos.y) -> " + Mathf.Round (pos.y) + " Mathf.Round(pos.y)/(float)chunkSize -> " + Mathf.Round (pos.x) / (float)chunkSize + " cy ->" + cx);
+		//Debug.Log ("Mathf.Round(pos.z) -> " + Mathf.Round (pos.z) + " Mathf.Round(pos.z)/(float)chunkSize -> " + Mathf.Round (pos.x) / (float)chunkSize + " cz ->" + cx);
+		//Debug.Log("World Hit: " + pos);
+		//Debug.Log("Chunk Hit: " + cn);
 
 		if(chunks.TryGetValue(cn, out c)) {
+			//Debug.Log("Block " + blx + " " + bly + " " + blz);
 			//Debug.Log (c.chunkData[blx, bly, blz].bType);
 			return c.chunkData[blx,bly,blz];
 		}
 		else
 			return null;
+
 	}
 
 	IEnumerator DrawChunks() {

@@ -13,20 +13,39 @@ public class BlockInteraction : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		if (Input.GetKeyDown("joystick button 0")) {
+		bool pcKeys = Input.GetMouseButtonDown(0) || Input.GetMouseButtonDown(1);
+		bool androidKeys = Input.GetKeyDown ("joystick button 0") || Input.GetKeyDown ("joystick button 2");
+		bool keys = androidKeys || pcKeys;
+		bool destroyKeys = Input.GetMouseButtonDown (0) || Input.GetKeyDown ("joystick button 0");
+		if (keys) {
 			RaycastHit hit;
 			//Debug.DrawRay (vrCamera.transform.position, vrCamera.TransformDirection (Vector3.forward)*1);
 			if (Physics.Raycast (vrCamera.transform.position, vrCamera.TransformDirection (Vector3.forward), out hit, 10)) {
-				Vector3 hitBlock = hit.point - hit.normal / 2.0f;
-				Block b = World.GetWorldBlock (hitBlock);
+				Chunk hitc;
+				if(!World.chunks.TryGetValue (hit.collider.gameObject.name, out hitc)) return;
+				
+				Vector3 hitBlock;
+				if(destroyKeys)
+					hitBlock = hit.point - hit.normal / 2.0f;
+				else
+					hitBlock = hit.point + hit.normal / 2.0f;
 
+				bool update = false;
+
+				Block b = World.GetWorldBlock (hitBlock);
 				int x = (int)b.position.x;
 				int y = (int)b.position.y;
 				int z = (int)b.position.z;
 
-				Chunk hitc;
+				if (destroyKeys)
+					update = hitc.chunkData [x, y, z].HitBlock ();
+				else {
+					b.owner.chunkData [x, y, z] = new Stone (b.position, b.owner);
+					b.owner.ReDraw ();
+					update = true;
+				}
 
-				if (World.chunks.TryGetValue (hit.collider.gameObject.name, out hitc) && hitc.chunkData[x,y,z].HitBlock()) {
+				if (update) {
 					List<string> updates = new List<string> ();
 
 					float thisChunkx = hitc.chunkData[x,y,z].position.x;
