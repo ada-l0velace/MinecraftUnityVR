@@ -7,7 +7,13 @@ public class Water : Block {
 	
 	public Water(Vector3 pos, Chunk o) : base(BlockType.WATER, pos, o.fluid.gameObject, o) {
 		texture = ItemTexture.Water;
+		max_health = 8;
 	}
+		
+	public override void NewBlock(Block b) {
+		owner.mb.StartCoroutine (owner.mb.Flow(this, b, BlockType.WATER, max_health,10));
+	}
+
 
 	public override void Draw (List<Vector3> v, List<Vector3> n, List<Vector2> u, List<Vector2> su, List<int> t, List<Vector3> v_w, List<Vector3> n_w, List<Vector2> u_w, List<Vector2> su_w, List<int> t_w) {
 		int[][] b = new int[][] { new int[] {0,-1,0} ,  new int[] {0,1,0} ,  new int[] {-1,0,0} ,  new int[] {1,0,0},  new int[] {0,0,1}, new int[] {0,0,-1} };

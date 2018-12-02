@@ -37,14 +37,13 @@ public class BlockInteraction : MonoBehaviour {
 				int y = (int)b.position.y;
 				int z = (int)b.position.z;
 
-				if (destroyKeys)
+				if (destroyKeys) {
 					update = hitc.chunkData [x, y, z].HitBlock ();
-				else {
-					b.owner.chunkData [x, y, z] = new Stone (b.position, b.owner);
-					b.owner.ReDraw ();
-					update = true;
 				}
-
+				else {
+					//update = b.BuildBlock (new Stone (b.position, b.owner));
+					update = b.BuildBlock (new Water (b.position, b.owner));
+				}
 				if (update) {
 					List<string> updates = new List<string> ();
 

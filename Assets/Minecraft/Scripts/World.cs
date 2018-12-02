@@ -12,13 +12,13 @@ public class World : MonoBehaviour {
 
 	public static uint maxCoroutines = 5000;
 	public static int chunkSize = 8;
-	public static int radius = 5;
+	public static int radius = 6;
 
 	public static Vector3[] allNormals = new Vector3[6];
 	public static Vector3[,,] allVertices = new Vector3[chunkSize+1,chunkSize+1,chunkSize+1];
 	public enum NDIR {UP, DOWN, LEFT, RIGHT, FRONT, BACK}
 
-	CoroutineQueue queue;
+	public CoroutineQueue queue;
 	public static ConcurrentDictionary<string, Chunk> chunks;
 	public static List<string> toRemove = new List<string> ();
 
@@ -221,7 +221,7 @@ public class World : MonoBehaviour {
 		this.transform.rotation = Quaternion.identity;
 		queue = new CoroutineQueue (maxCoroutines, StartCoroutine);
 
-		//build starting chunk
+		//	 starting chunk
 		BuildChunkAt ((int)(player.transform.position.x / chunkSize), 
 			(int)(player.transform.position.y / chunkSize), 
 			(int)(player.transform.position.z / chunkSize));

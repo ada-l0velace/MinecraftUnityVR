@@ -68,6 +68,20 @@ public class Block {
 		return i;
 	}
 
+	public bool BuildBlock(Block b) {
+		Debug.Log (bType.ToString());
+		b.NewBlock(this);
+		return true;
+	}
+
+	public virtual void NewBlock(Block b) {
+		int x = (int)b.position.x;
+		int y = (int)b.position.y;
+		int z = (int)b.position.z;
+		owner.chunkData [x, y, z] = b;
+		owner.ReDraw ();
+	}
+
 	public Block GetBlock(int x, int y, int z) {
 		Block[,,] chunks;
 
@@ -78,11 +92,11 @@ public class Block {
 
 			int newX = x, newY = y, newZ = z;
 			if (x < 0 || x >= World.chunkSize)
-				newX = (x - (int)position.x) * World.chunkSize;
+				newX = (x - (int)(position.x)) * World.chunkSize;
 			if (y < 0 || y >= World.chunkSize)
-				newY = (y - (int)position.y) * World.chunkSize;
+				newY = (y - (int)(position.y)) * World.chunkSize;
 			if (z < 0 || z >= World.chunkSize)
-				newZ = (z - (int)position.z) * World.chunkSize;
+				newZ = (z - (int)(position.z)) * World.chunkSize;
 			
 			Vector3 neighbourChunkPos = this.parent.transform.position + new Vector3 (newX,
 				newY, newZ);
@@ -96,9 +110,49 @@ public class Block {
 			Chunk nChunk;
 			if (World.chunks.TryGetValue (nName, out nChunk))
 				chunks = nChunk.chunkData;
-			else
+			else {
 				return null;
+			}
+		} else
+			chunks = owner.chunkData;	
 
+		try {
+			return chunks [x, y, z];
+		} catch (System.IndexOutOfRangeException ex) { Debug.Log (ex.Message);}
+		return null;
+	}
+
+	public Block GetBlock2(int x, int y, int z) {
+		Block[,,] chunks;
+
+		// Block in a neighbouring chunk
+		if (x < 0 || x >= World.chunkSize ||
+			y < 0 || y >= World.chunkSize ||
+			z < 0 || z >= World.chunkSize) {
+
+			int newX = x, newY = y, newZ = z;
+			//if (x < 0 || x >= World.chunkSize)
+			newX = (x - (int)(position.x)) * World.chunkSize;
+			//if (y < 0 || y >= World.chunkSize)
+			newY = (y - (int)(position.y)) * World.chunkSize;
+			//if (z < 0 || z >= World.chunkSize)
+			newZ = (z - (int)(position.z)) * World.chunkSize;
+
+			Vector3 neighbourChunkPos = this.parent.transform.position + new Vector3 (newX,
+				newY, newZ);
+
+			string nName = World.BuildChunkName (neighbourChunkPos);
+
+			x = ConvertBlockIndexToLocal (x);
+			y = ConvertBlockIndexToLocal (y);
+			z = ConvertBlockIndexToLocal (z);
+
+			Chunk nChunk;
+			if (World.chunks.TryGetValue (nName, out nChunk))
+				chunks = nChunk.chunkData;
+			else {
+				return null;
+			}
 		} else
 			chunks = owner.chunkData;	
 
@@ -117,8 +171,17 @@ public class Block {
 		}
 
 		if (current_health <= 0) {
-			owner.chunkData [(int)position.x, (int)position.y, (int)position.z] = new Air (position, owner);
-			owner.ReDraw ();
+			if (HasWaterNeighbour((int)position.x, (int)position.y, (int)position.z)) {
+				//owner.chunkData [(int)position.x, (int)position.y, (int)position.z] = new Air (position, owner);
+				bType = BlockType.AIR;
+				//owner.ReDraw ();
+				BuildBlock (new Water (position, owner));
+				//return false;
+			}
+			else {
+				owner.chunkData [(int)position.x, (int)position.y, (int)position.z] = new Air (position, owner);
+				owner.ReDraw ();
+			}
 			return true;
 		}
 		owner.ReDraw ();
@@ -132,7 +195,18 @@ public class Block {
 
 		return false;
 	}
-		
+
+	public bool HasWaterNeighbour(int x, int y, int z) {
+		int[][] sides = new int[][] {new int[] {0,1,0} ,  new int[] {-1,0,0} ,  new int[] {1,0,0},  new int[] {0,0,1}, new int[] {0,0,-1} };
+		for (int i = 0; i < sides.Length; i++) {
+			Block b = GetBlock(x+sides[i][0],y+sides[i][1],z+sides[i][2]);
+			if(b != null && !b.isSolid && b.bType == Block.BlockType.WATER)
+				return true;
+		}
+		return false;
+	}
+
+
 
 	protected void CreateQuad(Cubeside side,List<Vector3> v, List<Vector3> n, List<Vector2> u, List<Vector2> su, List<int> t, ItemTexture texture) {
 		
