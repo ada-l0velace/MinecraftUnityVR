@@ -224,14 +224,14 @@ public class Chunk {
 		SUVs_w.Clear();
 		Tris_w.Clear();
 
-		if (!treesCreated) {
+		/*if (!treesCreated) {
 			for (int z = 0; z < World.chunkSize; z++)
 				for (int y = 0; y < World.chunkSize; y++)
 					for (int x = 0; x < World.chunkSize; x++) {
 						BuildTrees (chunkData [x, y, z], x, y, z);
 					}
 			treesCreated = true;
-		}
+		}*/
 
 		for (int z = 0; z < World.chunkSize; z++)
 			for (int y = 0; y < World.chunkSize; y++)

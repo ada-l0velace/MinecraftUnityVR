@@ -5,10 +5,12 @@ using UnityEngine;
 public class BlockInteraction : MonoBehaviour {
 
 	public Transform vrCamera;
-
+	public GameObject model;
+	private Animator playerAnimator;
 	// Use this for initialization
+
 	void Start () {
-		
+		playerAnimator = model.GetComponent<Animator> ();
 	}
 	
 	// Update is called once per frame
@@ -17,6 +19,7 @@ public class BlockInteraction : MonoBehaviour {
 		bool androidKeys = Input.GetKeyDown ("joystick button 0") || Input.GetKeyDown ("joystick button 2");
 		bool keys = androidKeys || pcKeys;
 		bool destroyKeys = Input.GetMouseButtonDown (0) || Input.GetKeyDown ("joystick button 0");
+		// .SetBool ("attacking", true);
 		if (keys) {
 			RaycastHit hit;
 			//Debug.DrawRay (vrCamera.transform.position, vrCamera.TransformDirection (Vector3.forward)*1);
@@ -38,11 +41,12 @@ public class BlockInteraction : MonoBehaviour {
 				int z = (int)b.position.z;
 
 				if (destroyKeys) {
+					playerAnimator.SetTrigger ("attacking");
 					update = hitc.chunkData [x, y, z].HitBlock ();
 				}
 				else {
 					//update = b.BuildBlock (new Stone (b.position, b.owner));
-					update = b.BuildBlock (new Water (b.position, b.owner));
+					update = b.BuildBlock (BlockFactory.Get (World.Instance.character.inventory.getSelectedItem().getBlockType (), b.position, b.owner));
 				}
 				if (update) {
 					List<string> updates = new List<string> ();

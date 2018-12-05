@@ -29,11 +29,18 @@ public class ChunkMB : MonoBehaviour {
 		if (old_b.bType != Block.BlockType.AIR) yield break;
 		//b.BuildBlock ();
 		b.current_health = strength;
-		old_b.NewBlock(b);
+		//old_b.NewBlock(b);
+
+
 
 		int x = (int)b.position.x;
 		int y = (int)b.position.y;
 		int z = (int)b.position.z;
+		old_b.owner.chunkData [x, y, z] = b;
+		old_b.owner.ReDraw ();
+
+
+
 		yield return new WaitForSeconds (1);
 
 		Block below = b.GetBlock2(x, y - 1, z);

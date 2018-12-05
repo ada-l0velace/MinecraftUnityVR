@@ -36,9 +36,11 @@ public class World : MonoBehaviour {
 		return (int)v.x + "_" + (int)v.y + "_" + (int)v.z;
 	}
 
+	public Character character;
 
 	void Awake() {
 		Instance = this;
+		character = new Character();
 	}
 	void BuildChunkAt(int x, int y, int z) {
 		Vector3 chunkPostion = new Vector3(x*chunkSize,y*chunkSize,z*chunkSize);
@@ -258,6 +260,6 @@ public class World : MonoBehaviour {
 		
 		queue.Run(DrawChunks ());
 
-		queue.Run(RemoveOldChunks ());
+		//queue.Run(RemoveOldChunks ());
 	}
 }

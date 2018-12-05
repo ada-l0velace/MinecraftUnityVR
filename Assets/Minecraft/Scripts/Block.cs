@@ -9,7 +9,7 @@ public class Block {
 
 	public Material material;
 
-	protected enum Cubeside {BOTTOM, TOP, LEFT, RIGHT, FRONT, BACK};
+	public enum Cubeside {BOTTOM, TOP, LEFT, RIGHT, FRONT, BACK};
 	public enum BlockType {GRASS, DIRT, STONE, AIR, LEAVES, WOOD, WOODBASE, DIAMOND, REDSTONE, BEDROCK, WATER};
 	public enum CrackType {NOCRACK, CRACK1, CRACK2, CRACK3, CRACK4}
 
@@ -78,7 +78,7 @@ public class Block {
 		int x = (int)b.position.x;
 		int y = (int)b.position.y;
 		int z = (int)b.position.z;
-		owner.chunkData [x, y, z] = b;
+		owner.chunkData [x, y, z] = this;
 		owner.ReDraw ();
 	}
 

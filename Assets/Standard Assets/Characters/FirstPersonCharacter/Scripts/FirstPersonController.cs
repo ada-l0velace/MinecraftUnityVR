@@ -10,7 +10,8 @@ namespace UnityStandardAssets.Characters.FirstPerson
     [RequireComponent(typeof (AudioSource))]
     public class FirstPersonController : MonoBehaviour
     {
-        [SerializeField] private bool m_IsWalking;
+		[SerializeField] private GameObject model;
+		[SerializeField] private bool m_IsWalking;
         [SerializeField] private float m_WalkSpeed;
         [SerializeField] private float m_RunSpeed;
         [SerializeField] [Range(0f, 1f)] private float m_RunstepLenghten;
@@ -41,6 +42,7 @@ namespace UnityStandardAssets.Characters.FirstPerson
         private float m_NextStep;
         private bool m_Jumping;
         private AudioSource m_AudioSource;
+		private Animator playerAnimator;
 
         // Use this for initialization
         private void Start()
@@ -54,6 +56,7 @@ namespace UnityStandardAssets.Characters.FirstPerson
             m_NextStep = m_StepCycle/2f;
             m_Jumping = false;
             m_AudioSource = GetComponent<AudioSource>();
+			playerAnimator = model.GetComponent<Animator> ();
 			//m_MouseLook.Init(transform , m_Camera.transform);
         }
 
@@ -61,6 +64,7 @@ namespace UnityStandardAssets.Characters.FirstPerson
         // Update is called once per frame
         private void Update()
         {
+			playerAnimator.SetBool ("walking", CrossPlatformInputManager.GetAxis("Vertical") != 0);
             RotateView();
             // the jump state needs to read here to make sure it is not missed
             if (!m_Jump)
@@ -98,7 +102,7 @@ namespace UnityStandardAssets.Characters.FirstPerson
             float speed;
             GetInput(out speed);
             // always move along the camera forward as it is the direction that it being aimed at
-			Vector3 desiredMove =  m_Camera.transform.TransformDirection(Vector3.forward)*m_Input.y +  m_Camera.transform.TransformDirection(Vector3.right)*m_Input.x;
+			Vector3 desiredMove =  model.transform.TransformDirection(Vector3.forward)*m_Input.y +  model.transform.TransformDirection(Vector3.right)*m_Input.x;
 
             // get a normal for the surface that is being touched to move along it
             RaycastHit hitInfo;
@@ -128,6 +132,7 @@ namespace UnityStandardAssets.Characters.FirstPerson
             }
             m_CollisionFlags = m_CharacterController.Move(m_MoveDir*Time.fixedDeltaTime);
 
+			//playerAnimator.SetBool ("idle", CrossPlatformInputManager.GetAxis("Vertical") != 0);
             ProgressStepCycle(speed);
             UpdateCameraPosition(speed);
 
@@ -208,6 +213,7 @@ namespace UnityStandardAssets.Characters.FirstPerson
             float horizontal = CrossPlatformInputManager.GetAxis("Horizontal");
             float vertical = CrossPlatformInputManager.GetAxis("Vertical");
 
+			//playerAnimator.SetBool("walking", CrossPlatformInputManager.GetAxis("Horizontal") || CrossPlatformInputManager.GetAxis("Vertical"));
             bool waswalking = m_IsWalking;
 
 #if !MOBILE_INPUT
@@ -234,7 +240,7 @@ namespace UnityStandardAssets.Characters.FirstPerson
             if (m_IsWalking != waswalking && m_UseFovKick && m_CharacterController.velocity.sqrMagnitude > 0)
             {
                 StopAllCoroutines();
-                StartCoroutine(!m_IsWalking ? m_FovKick.FOVKickUp() : m_FovKick.FOVKickDown());
+				StartCoroutine(!m_IsWalking ? m_FovKick.FOVKickUp() : m_FovKick.FOVKickDown());
             }
         }
 
