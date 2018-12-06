@@ -25,7 +25,7 @@ public class InventoryManager : MonoBehaviour {
 	}
 
 	Color unselected = new Color32 (0x9d, 0x9d, 0x9d, 0xff);
-	Color selected = new Color32(0x5f,0x98,0x1e, 0xff);
+	Color selected = Color.white;//new Color32(0x5f,0x98,0x1e, 0xff);
 
 
 	public List<Minecraft.Item> slots {
