@@ -25,7 +25,7 @@ public class Block {
 
 	public int current_health = 0;
 	public int max_health;
-
+	public ParticleSystem particle;
 
 
 	public Block(BlockType b, Vector3 pos, GameObject p, Chunk o) {
@@ -162,7 +162,7 @@ public class Block {
 		return null;
 	}
 
-	public virtual bool HitBlock() {
+	public virtual bool HitBlock(Vector3 worldPos) {
 		current_health--;
 		health++;
 
@@ -171,18 +171,41 @@ public class Block {
 		}
 
 		if (current_health <= 0) {
-			if (HasWaterNeighbour((int)position.x, (int)position.y, (int)position.z)) {
+			if (HasWaterNeighbour ((int)position.x, (int)position.y, (int)position.z)) {
 				//owner.chunkData [(int)position.x, (int)position.y, (int)position.z] = new Air (position, owner);
 				bType = BlockType.AIR;
 				//owner.ReDraw ();
 				BuildBlock (new Water (position, owner));
 				//return false;
-			}
-			else {
+			} else {
 				owner.chunkData [(int)position.x, (int)position.y, (int)position.z] = new Air (position, owner);
 				owner.ReDraw ();
 			}
 			return true;
+		} else if (particle == null) {
+			particle = Particle.GetParticle ();
+
+			particle.transform.position = worldPos + new Vector3 (0, 0.5f, 0);
+			/*var main = particle;
+			main.loop = false;
+			main.startSpeed = 1;
+			main.startLifetime = 0.30f;
+			ParticleSystem.EmissionModule em = particle.emission;
+			em.enabled = true;
+			em.rateOverTime = 30;
+			var sh = main.shape;
+
+			sh.shapeType = ParticleSystemShapeType.Hemisphere;
+			sh.radius = 2;
+
+			ParticleSystemRenderer pr = main.GetComponent<ParticleSystemRenderer>();
+			pr.enabled = true;
+			pr.renderMode = ParticleSystemRenderMode.Mesh;*/
+			CreateCube (texture);
+			particle.Play ();
+		} else {
+			particle.transform.position = worldPos + new Vector3 (0, 0.5f, 0);
+			particle.Play ();
 		}
 		owner.ReDraw ();
 		return false;
@@ -306,6 +329,124 @@ public class Block {
 		}
 
 		su.Add(uv11+ItemTexture.Cracks[(int)(health)].back); su.Add(uv01+ItemTexture.Cracks[(int)(health)].back); su.Add(uv00+ItemTexture.Cracks[(int)(health)].back);su.Add(uv10+ItemTexture.Cracks[(int)(health)].back);
+
+	}
+
+	protected void CreateCube(ItemTexture texture) {
+
+		float resolution = 0.0625f;
+
+		//all possible UVs
+		Vector2 uv00 = new Vector2(0f,0f) * resolution;
+		Vector2 uv10 = new Vector2(1f,0f) * resolution;
+		Vector2 uv01 = new Vector2(0f,1f) * resolution;
+		Vector2 uv11 = new Vector2(1f,1f) * resolution;
+
+		float size = 1f;
+		Vector3[] vertices = {
+			new Vector3(0, size, size),
+			new Vector3(size, size, size), // front
+			new Vector3(size, 0, size),
+			new Vector3(0, 0, size),
+
+			new Vector3(size, size, 0), //back
+			new Vector3(0, size, 0),
+			new Vector3(0, 0, 0),
+			new Vector3(size, 0, 0),
+
+			new Vector3(0, size, 0), //top
+			new Vector3(size, size, size),
+			new Vector3(size, size, 0),
+			new Vector3(0, size, size),
+
+			new Vector3(0, 0, size), // bot
+			new Vector3(size, 0, size),
+			new Vector3(size, 0, 0),
+			new Vector3(0, 0, 0),
+
+			new Vector3(0, size, 0), // left
+			new Vector3(0, size, size),
+			new Vector3(0, 0, size),
+			new Vector3(0, 0, 0),
+
+			new Vector3(size, size, size), //right
+			new Vector3(size, size, 0),
+			new Vector3(size, 0, 0),
+			new Vector3(size, 0, size),
+
+		};
+
+
+		Vector3[] normals = {
+			Vector3.forward, Vector3.forward, Vector3.forward, Vector3.forward,
+			Vector3.back, Vector3.back, Vector3.back, Vector3.back,
+			Vector3.up, Vector3.up, Vector3.up, Vector3.up,
+			Vector3.down, Vector3.down, Vector3.down, Vector3.down,
+			Vector3.left, Vector3.left, Vector3.left, Vector3.left,
+			Vector3.right, Vector3.right, Vector3.right, Vector3.right,
+		};
+
+		int[] triangles = {
+			1, 3, 0, // front
+			1, 2, 3,
+
+			4, 7, 5, // back
+			5, 7, 6,
+
+			8, 9, 10, //top
+			9, 8, 11, 
+
+			15, 13, 12, //bottom
+			13, 15, 14,
+
+			18, 16, 19,// left
+			16, 18, 17,
+
+			20, 22, 21,//right
+			22, 20, 23
+		};
+
+		Vector2[] uvs = {
+			uv11+texture.front,
+			uv01+texture.front,
+			uv00+texture.front,
+			uv10+texture.front,
+
+			uv11+texture.back,
+			uv01+texture.back,
+			uv00+texture.back,
+			uv10+texture.back,
+
+			uv11+texture.top,
+			uv01+texture.top,
+			uv00+texture.top,
+			uv10+texture.top,
+
+			uv11+texture.bottom,
+			uv01+texture.bottom,
+			uv00+texture.bottom,
+			uv10+texture.bottom,
+
+			uv11+texture.left,
+			uv01+texture.left,
+			uv00+texture.left,
+			uv10+texture.left,
+
+			uv11+texture.right,
+			uv01+texture.right,
+			uv00+texture.right,
+			uv10+texture.right,
+
+
+		}; 
+		Mesh mesh = new Mesh();
+		mesh.Clear ();
+		mesh.vertices = vertices;
+		mesh.triangles = triangles;
+		mesh.uv = uvs;
+		mesh.RecalculateBounds();
+		mesh.RecalculateNormals ();
+		particle.GetComponent<ParticleSystemRenderer> ().mesh = mesh;
 
 	}
 	// Use this for initialization

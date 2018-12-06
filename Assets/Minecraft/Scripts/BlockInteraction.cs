@@ -42,7 +42,7 @@ public class BlockInteraction : MonoBehaviour {
 
 				if (destroyKeys) {
 					playerAnimator.SetTrigger ("attacking");
-					update = hitc.chunkData [x, y, z].HitBlock ();
+					update = hitc.chunkData [x, y, z].HitBlock (hitBlock);
 				}
 				else {
 					//update = b.BuildBlock (new Stone (b.position, b.owner));
