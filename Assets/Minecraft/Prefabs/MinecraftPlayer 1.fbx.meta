@@ -1,57 +1,53 @@
 fileFormatVersion: 2
-guid: 7c298bf31f77c1943b156781f6e595df
+guid: 9fb0bac7568fb3f46beb5e8502799cce
 ModelImporter:
   serializedVersion: 23
   fileIDToRecycleName:
     100000: body
     100002: Camera
-    100004: larm.L
-    100006: larm.L_end
-    100008: larm.R
-    100010: larm.R_end
-    100012: lleg.L
-    100014: lleg.L_end
-    100016: lleg.R
-    100018: lleg.R_end
-    100020: //RootNode
-    100022: Player
-    100024: PlayerArmature
-    100026: root
-    100028: Sun
-    100030: top
-    100032: top_end
-    100034: uarm.L
-    100036: uarm.R
-    100038: uleg.L
-    100040: uleg.R
+    100004: larm_L
+    100006: larm_R
+    100008: lleg_L
+    100010: lleg_R
+    100012: //RootNode
+    100014: Player
+    100016: PlayerArmature
+    100018: root
+    100020: Sun
+    100022: top
+    100024: uarm_L
+    100026: uarm_R
+    100028: uleg_L
+    100030: uleg_R
     400000: body
     400002: Camera
-    400004: larm.L
-    400006: larm.L_end
-    400008: larm.R
-    400010: larm.R_end
-    400012: lleg.L
-    400014: lleg.L_end
-    400016: lleg.R
-    400018: lleg.R_end
-    400020: //RootNode
-    400022: Player
-    400024: PlayerArmature
-    400026: root
-    400028: Sun
-    400030: top
-    400032: top_end
-    400034: uarm.L
-    400036: uarm.R
-    400038: uleg.L
-    400040: uleg.R
+    400004: larm_L
+    400006: larm_R
+    400008: lleg_L
+    400010: lleg_R
+    400012: //RootNode
+    400014: Player
+    400016: PlayerArmature
+    400018: root
+    400020: Sun
+    400022: top
+    400024: uarm_L
+    400026: uarm_R
+    400028: uleg_L
+    400030: uleg_R
     2000000: Camera
-    2100000: Player
+    2100000: Player__char_png
     4300000: Player
+    7400000: Default Take
     9500000: //RootNode
     10800000: Sun
     13700000: Player
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Player__char_png
+    second: {fileID: 2100000, guid: 4400a49f35a4e7b49aae6af37efa73fc, type: 2}
   materials:
     importMaterials: 1
     materialName: 0
