@@ -5,7 +5,8 @@ using UnityEngine.Networking;
 using System;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.IO;
-
+using UnityEngine.AI;
+using UnityEditor;
 
 [Serializable]
 class BlockData {
@@ -27,12 +28,14 @@ class BlockData {
 
 public class Chunk {
 
+	public bool surfaceChunk = false;
 	public bool waterChunk = false;
 	public Material cubeMaterial;
 	public Material fluidMaterial;
 	public Block[,,] chunkData;
 	public GameObject chunk;
 	public ChunkMB mb;
+
 	public GameObject fluid;
 	public enum ChunkStatus {DRAW,DONE,KEEP};
 	public ChunkStatus status;
@@ -100,10 +103,18 @@ public class Chunk {
 	// Use this for initialization
 	public Chunk (Vector3 position, Material c, Material t) {
 		chunk = new GameObject (World.BuildChunkName(position));
+		/*var newFlags = StaticEditorFlags.LightmapStatic | StaticEditorFlags.OccluderStatic | StaticEditorFlags.OccludeeStatic | StaticEditorFlags.BatchingStatic | StaticEditorFlags.NavigationStatic | StaticEditorFlags.OffMeshLinkGeneration;
+		GameObjectUtility.SetStaticEditorFlags (chunk, newFlags);
+		GameObjectUtility.SetStaticEditorFlags (chunk, GameObjectUtility.GetStaticEditorFlags (chunk) | StaticEditorFlags.NavigationStatic);
+		*/
 		chunk.transform.position = position;
 		fluid = new GameObject (World.BuildChunkName(position) + "_F");
 		fluid.transform.position = position;
 		mb = chunk.AddComponent<ChunkMB> ();
+		fluid.gameObject.tag = "Water";
+		(fluid.gameObject.AddComponent<NavMeshObstacle> ()).carving=true;
+		//meshSurface = chunk.AddComponent<NavMeshSurface>();
+		
 		mb.SetOwner (this);
 		cubeMaterial = c;
 		fluidMaterial = t;
@@ -151,10 +162,12 @@ public class Chunk {
 								//chunk.gameObject, this);
 					}
 					else if(worldY == surfaceHeight) {
+						surfaceChunk = true;
 						if (Utils.fBM3D (worldX, worldY, worldZ, 0.4f, 2) < 0.4f && worldY > 70)
 							chunkData [x, y, z] = new WoodBase (pos, this); //new Block (Block.BlockType.WOODBASE, pos, 
 								//chunk.gameObject, this);
 						else {
+							
 							chunkData [x, y, z] = new Grass (pos, this); //new Block (Block.BlockType.GRASS, pos, 
 								//chunk.gameObject, this);
 						}
@@ -171,6 +184,7 @@ public class Chunk {
 						//fluid.gameObject.transform.parent = World.Instance.transform;
 						chunkData [x, y, z] = new Water (pos, this); //new Block (Block.BlockType.WATER, pos, 
 							//fluid.gameObject, this);
+						waterChunk = true;
 					}
 
 					status = ChunkStatus.DRAW;
@@ -251,7 +265,19 @@ public class Chunk {
 		//CombineQuads(fluid.gameObject, fluidMaterial);
 
 		//CombineTwoMeshes (chunk.gameObject, fluid.gameObject);
+		if(waterChunk && chunk.gameObject.GetComponent<NavMeshObstacle>() == null) 
+			chunk.gameObject.AddComponent<NavMeshObstacle>();
 		status = ChunkStatus.DONE;
+		/*if (surfaceChunk) {
+			meshSurface = chunk.AddComponent<NavMeshSurface>();
+			var newFlags = StaticEditorFlags.OffMeshLinkGeneration | StaticEditorFlags.NavigationStatic;
+			GameObjectUtility.SetStaticEditorFlags(chunk, newFlags);
+			//StaticEditorFlags.OffMeshLinkGeneration = true;
+			meshSurface.BuildNavMesh ();
+		}*/
+		//meshSurface.BuildNavMesh ();
+		//World.Instance.wtf++;
+		//Debug.Log(World.Instance.wtf);
 		if (World.Instance.firstbuild) {
 			World.Instance.processCount++;
 			World.Instance.loadingAmount.value = World.Instance.processCount / (World.totalChunks);

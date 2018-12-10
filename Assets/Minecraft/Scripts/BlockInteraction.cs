@@ -11,6 +11,7 @@ public class BlockInteraction : MonoBehaviour {
 
 	void Start () {
 		playerAnimator = model.GetComponent<Animator> ();
+		World.Instance.character.audio = GetComponent<AudioSource>();
 	}
 	
 	// Update is called once per frame

@@ -5,6 +5,7 @@ using UnityEngine;
 public class Character {
 
 	public Inventory inventory;
+	public AudioSource audio;
 
 	public Character() {
 		

@@ -7,6 +7,7 @@ public class Grass : Block {
 
 	public Grass(Vector3 pos, Chunk o) : base(BlockType.GRASS, pos, o.chunk.gameObject, o) {
 		texture = ItemTexture.Grass;
+		audioClips = ResourcesManager.Instance.GrassAudio;
 	}
 
 	/*public override void SetType(BlockType b) {

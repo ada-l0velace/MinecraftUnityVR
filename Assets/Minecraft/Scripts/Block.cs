@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class Block {
 
@@ -26,7 +27,8 @@ public class Block {
 	public int current_health = 0;
 	public int max_health;
 	public ParticleSystem particle;
-
+	protected AudioSource m_AudioSource;
+	public List<AudioClip> audioClips;
 
 	public Block(BlockType b, Vector3 pos, GameObject p, Chunk o) {
 		max_health = 4;
@@ -34,6 +36,7 @@ public class Block {
 		owner = o;
 		parent = p;
 		position = pos;
+		m_AudioSource = World.Instance.character.audio;
 		SetType(bType);
 	}
 
@@ -171,6 +174,10 @@ public class Block {
 		}
 
 		if (current_health <= 0) {
+			m_AudioSource.clip = audioClips[audioClips.Count-1];
+			m_AudioSource.PlayOneShot(m_AudioSource.clip);
+			m_AudioSource.Play();
+			World.Instance.meshSurface.BuildNavMesh();
 			if (HasWaterNeighbour ((int)position.x, (int)position.y, (int)position.z)) {
 				//owner.chunkData [(int)position.x, (int)position.y, (int)position.z] = new Air (position, owner);
 				bType = BlockType.AIR;
@@ -183,9 +190,13 @@ public class Block {
 			}
 			return true;
 		} else if (particle == null) {
-			particle = Particle.GetParticle ();
+			particle = ResourcesManager.Instance.GetParticle ();
 
 			particle.transform.position = worldPos + new Vector3 (0, 0.5f, 0);
+			int n = Random.Range(0, audioClips.Count-1);
+			m_AudioSource.clip = audioClips[n];
+			m_AudioSource.PlayOneShot(m_AudioSource.clip);
+			m_AudioSource.Play();
 			/*var main = particle;
 			main.loop = false;
 			main.startSpeed = 1;
@@ -204,6 +215,10 @@ public class Block {
 			CreateCube (texture);
 			particle.Play ();
 		} else {
+			int n = Random.Range(0, audioClips.Count-1);
+			m_AudioSource.clip = audioClips[n];
+			m_AudioSource.PlayOneShot(m_AudioSource.clip);
+			m_AudioSource.Play();
 			particle.transform.position = worldPos + new Vector3 (0, 0.5f, 0);
 			particle.Play ();
 		}

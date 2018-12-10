@@ -1,7 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 using UnityEngine.UI;
+using UnityEditor;
 using Realtime.Messaging.Internal;
 
 public class World : MonoBehaviour {
@@ -14,6 +16,7 @@ public class World : MonoBehaviour {
 	public static int chunkSize = 8;
 	public static int radius = 6;
 
+	public int wtf = 0;
 	public static Vector3[] allNormals = new Vector3[6];
 	public static Vector3[,,] allVertices = new Vector3[chunkSize+1,chunkSize+1,chunkSize+1];
 	public enum NDIR {UP, DOWN, LEFT, RIGHT, FRONT, BACK}
@@ -24,12 +27,13 @@ public class World : MonoBehaviour {
 
 	public bool firstbuild = true;
 	public Vector3 lastBuildPos;
+	public NavMeshSurface meshSurface;
 
 	public GameObject loadingCam;
 	public Slider loadingAmount;
 	public static World Instance { get; private set; }
 
-	public static float totalChunks = (Mathf.Pow(radius,2)) * 2 * 2 -2;
+	public static float totalChunks = 231;//(Mathf.Pow(radius,2)) * 2 * 2 -2;
 	public int processCount = 0;
 	float startTime;
 	public static string BuildChunkName(Vector3 v) {
@@ -41,6 +45,7 @@ public class World : MonoBehaviour {
 	void Awake() {
 		Instance = this;
 		character = new Character();
+		Debug.Log (totalChunks);
 	}
 	void BuildChunkAt(int x, int y, int z) {
 		Vector3 chunkPostion = new Vector3(x*chunkSize,y*chunkSize,z*chunkSize);
@@ -254,10 +259,16 @@ public class World : MonoBehaviour {
 				loadingCam.SetActive (false);
 				/*Debug.Log("Built in " + (Time.time - startTime));*/
 				player.SetActive (true);
+				//Chunk item;
+				//chunks.TryGetValue ("8_72_8", out item);
+
+				meshSurface = this.gameObject.AddComponent<NavMeshSurface> ();
+				meshSurface.layerMask = 1;
+				//StaticEditorFlags.OffMeshLinkGeneration = true;
+				meshSurface.BuildNavMesh ();
+			
 			}
 		}
-		
-		
 		queue.Run(DrawChunks ());
 
 		//queue.Run(RemoveOldChunks ());
