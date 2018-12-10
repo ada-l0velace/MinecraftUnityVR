@@ -9,6 +9,7 @@ using Realtime.Messaging.Internal;
 public class World : MonoBehaviour {
 
 	public GameObject player;
+	public GameObject mob_o;
 	public Material textureAtlas;
 	public Material fluidTexture;
 

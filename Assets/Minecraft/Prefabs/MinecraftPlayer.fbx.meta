@@ -42,7 +42,12 @@ ModelImporter:
     9500000: //RootNode
     10800000: Sun
     13700000: Player
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Player__char_png
+    second: {fileID: 2100000, guid: eebe92904c225d84ea3b4e06318cb020, type: 2}
   materials:
     importMaterials: 1
     materialName: 0

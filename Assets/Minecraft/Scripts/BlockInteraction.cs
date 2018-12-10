@@ -1,18 +1,30 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class BlockInteraction : MonoBehaviour {
 
 	public Transform vrCamera;
 	public GameObject model;
+	public GameObject model2;
 	private Animator playerAnimator;
+	public GameObject arm;
+	Vector3 old_pos;
 	// Use this for initialization
 
 	void Start () {
 		playerAnimator = model.GetComponent<Animator> ();
 		World.Instance.character.audio = GetComponent<AudioSource>();
+		World.Instance.mob.audio = World.Instance.mob_o.GetComponent<AudioSource> ();
+		old_pos = arm.transform.position;
 	}
+
+	public IEnumerator lol() {
+		yield return new WaitForSeconds (0.2f);
+		arm.transform.position = old_pos;
+	}
+
 	
 	// Update is called once per frame
 	void Update () {
@@ -24,8 +36,22 @@ public class BlockInteraction : MonoBehaviour {
 		if (keys) {
 			RaycastHit hit;
 			//Debug.DrawRay (vrCamera.transform.position, vrCamera.TransformDirection (Vector3.forward)*1);
-			if (Physics.Raycast (vrCamera.transform.position, vrCamera.TransformDirection (Vector3.forward), out hit, 10)) {
+			if (Physics.Raycast (vrCamera.transform.position, vrCamera.TransformDirection (Vector3.forward), out hit, 5)) {
 				Chunk hitc;
+				if (hit.collider.gameObject.name == "Zombie") {
+					World.Instance.character.attack(World.Instance.mob);
+					//old_pos = arm.transform.position;
+					//arm.transform.position = hit.point;
+					//StartCoroutine ("lol");
+					/*renderer.color = Color.red;
+					Invoke("ResetColor", flashTime);
+
+					renderer.color = origionalColor;
+					*/
+					if (World.Instance.mob.isCharacterDead ())
+						DestroyImmediate (World.Instance.mob_o);
+					return;
+				}
 				if(!World.chunks.TryGetValue (hit.collider.gameObject.name, out hitc)) return;
 				
 				Vector3 hitBlock;
@@ -81,8 +107,8 @@ public class BlockInteraction : MonoBehaviour {
 					}
 					World.Instance.meshSurface.UpdateNavMesh(World.Instance.meshSurface.navMeshData);
 				}
-
 			}
+
 		}
 	}
 }

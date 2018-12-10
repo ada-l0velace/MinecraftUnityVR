@@ -8,6 +8,7 @@ public class ResourcesManager : MonoBehaviour {
 	public List<AudioClip> StoneAudio;
 	public List<AudioClip> WoodAudio;
 	public List<AudioClip> CharacterAudio;
+	public List<AudioClip> ZombieAudio;
 	private static ResourcesManager instance = null;
 	
 	public static ResourcesManager Instance {
@@ -24,6 +25,7 @@ public class ResourcesManager : MonoBehaviour {
 	void Start () {
 		particle = Instantiate (particle);
 		World.Instance.character.sounds = ResourcesManager.Instance.CharacterAudio;
+		World.Instance.mob.sounds = ResourcesManager.Instance.ZombieAudio;
 		//particles = GetComponent<ParticleSystem> ();
 		//ParticleSystemRenderer renderer = particles.GetComponent<ParticleSystemRenderer>();
 		//CreateCube(ItemTexture.Bedrock);
@@ -33,4 +35,6 @@ public class ResourcesManager : MonoBehaviour {
 	public ParticleSystem GetParticle() {
 		return particle;
 	}
+
+
 }

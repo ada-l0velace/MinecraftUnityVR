@@ -56,12 +56,27 @@ public class InventoryManager : MonoBehaviour {
 			character.BuildHeart (Instantiate(heart));
 		}
 	}
-	
+	// joystick button 0 Square
+	// joystick button 1 Cross
+	// joystick button 2 Triangule
+	// joystick button 3 L1
+	// joystick button 4 L2
+	// joystick button 5 R2
+	// joystick button 6 Share
+	// joystick button 7 Center
+	// joystick button 8 Options
+	// joystick button 9 R3
+	// joystick button 10 R3
+	// joystick button 11 L3
+	// joystick button 12 PS
+	// joystick button 13 Circle
+
+
 	// Update is called once per frame
 	void Update () {
 		var axis = Input.GetAxis ("Mouse ScrollWheel");
-		bool up = axis > 0f;
-		bool down = axis < 0f;
+		bool up = axis > 0f || Input.GetKeyDown("joystick button 5");
+		bool down = axis < 0f || Input.GetKeyDown("joystick button 4");
 
 		if (up) {
 			slots[selectedItem].inventoryIcon.GetComponentInChildren<RawImage> ().color = unselected;

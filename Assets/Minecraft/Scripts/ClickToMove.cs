@@ -8,11 +8,9 @@ public class ClickToMove : MonoBehaviour
 {
 	public Transform player;
 	public Transform mob;
-	NavMeshAgent m_Agent;
-	RaycastHit m_HitInfo = new RaycastHit();
+	public NavMeshAgent m_Agent;
 	Vector3 startPosition;
 	bool commingBack = true;
-	bool attacking = false;
 	Character character {
 		get { return World.Instance.character; }
 		set { World.Instance.character = value; }
@@ -51,7 +49,7 @@ public class ClickToMove : MonoBehaviour
 			if (m_Agent.remainingDistance <= m_Agent.stoppingDistance && !commingBack) {
 				mob.GetComponent<Animator> ().SetBool ("walking", false);
 				transform.LookAt (player.position + new Vector3 (0, -0.5f, 0));
-				if (mob.GetComponent<Animator> ().GetCurrentAnimatorStateInfo (0).IsName("idle")) {
+				if (mob.GetComponent<Animator> ().GetCurrentAnimatorStateInfo (0).IsName("idle") && Vector3.Distance(player.transform.position, mob.transform.position) <= 2) {
 						mob.GetComponent<Animator> ().SetTrigger ("attacking");
 					/*if (!mob.GetComponent<Animator> ().GetCurrentAnimatorStateInfo(0).IsTag("wtf") && mob.GetComponent<Animator> ().GetCurrentAnimatorStateInfo(0).normalizedTime < 1.0f) {
 						attacking = false;
@@ -67,6 +65,7 @@ public class ClickToMove : MonoBehaviour
 
 		if (character.isCharacterDead ())
 			SceneManager.LoadScene (SceneManager.GetActiveScene ().name);
+		
 		/*
 		if (Vector3.Distance (transform.position, player.position) <= 1.5f) {
 			transform.LookAt(player.position+ new Vector3(0,-0.5f,0));
@@ -83,10 +82,5 @@ public class ClickToMove : MonoBehaviour
 	public void AttackEnd() {
 		_mob.attack(character);
 		Destroy(character.RemoveHeart ());
-	}
-
-	IEnumerator OnCompleteAttackAnimation() {
-		yield return new WaitUntil(() => mob.GetComponent<Animator> ().GetCurrentAnimatorStateInfo(0).normalizedTime < 1.0f);
-		attacking = false;
 	}
 }
