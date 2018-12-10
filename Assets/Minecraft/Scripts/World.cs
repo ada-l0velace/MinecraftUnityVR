@@ -16,7 +16,6 @@ public class World : MonoBehaviour {
 	public static int chunkSize = 8;
 	public static int radius = 6;
 
-	public int wtf = 0;
 	public static Vector3[] allNormals = new Vector3[6];
 	public static Vector3[,,] allVertices = new Vector3[chunkSize+1,chunkSize+1,chunkSize+1];
 	public enum NDIR {UP, DOWN, LEFT, RIGHT, FRONT, BACK}
@@ -28,6 +27,8 @@ public class World : MonoBehaviour {
 	public bool firstbuild = true;
 	public Vector3 lastBuildPos;
 	public NavMeshSurface meshSurface;
+	public GameObject healthPanel;
+
 
 	public GameObject loadingCam;
 	public Slider loadingAmount;
@@ -41,11 +42,13 @@ public class World : MonoBehaviour {
 	}
 
 	public Character character;
+	public Mob mob;
 
 	void Awake() {
 		Instance = this;
-		character = new Character();
-		Debug.Log (totalChunks);
+		character = new Character(healthPanel);
+		mob = new Mob ();
+		//Debug.Log (totalChunks);
 	}
 	void BuildChunkAt(int x, int y, int z) {
 		Vector3 chunkPostion = new Vector3(x*chunkSize,y*chunkSize,z*chunkSize);
@@ -271,6 +274,6 @@ public class World : MonoBehaviour {
 		}
 		queue.Run(DrawChunks ());
 
-		//queue.Run(RemoveOldChunks ());
+		queue.Run(RemoveOldChunks ());
 	}
 }

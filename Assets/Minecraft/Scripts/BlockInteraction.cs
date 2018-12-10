@@ -79,6 +79,7 @@ public class BlockInteraction : MonoBehaviour {
 							c.ReDraw ();
 						}
 					}
+					World.Instance.meshSurface.UpdateNavMesh(World.Instance.meshSurface.navMeshData);
 				}
 
 			}

@@ -177,7 +177,8 @@ public class Block {
 			m_AudioSource.clip = audioClips[audioClips.Count-1];
 			m_AudioSource.PlayOneShot(m_AudioSource.clip);
 			m_AudioSource.Play();
-			World.Instance.meshSurface.BuildNavMesh();
+
+			World.Instance.meshSurface.UpdateNavMesh(World.Instance.meshSurface.navMeshData);
 			if (HasWaterNeighbour ((int)position.x, (int)position.y, (int)position.z)) {
 				//owner.chunkData [(int)position.x, (int)position.y, (int)position.z] = new Air (position, owner);
 				bType = BlockType.AIR;

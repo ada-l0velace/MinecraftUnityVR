@@ -9,6 +9,7 @@ public class InventoryManager : MonoBehaviour {
 	public GameObject background;
 	public GameObject slot;
 	public Material material;
+	public RawImage heart;
 
 	public int selectedItem {
 		get { return World.Instance.character.inventory.selectedItem; }
@@ -22,6 +23,11 @@ public class InventoryManager : MonoBehaviour {
 	public Inventory inventory {
 		get { return World.Instance.character.inventory; }
 		set { World.Instance.character.inventory = value; }
+	}
+
+	public Character character {
+		get { return World.Instance.character; }
+		set { World.Instance.character = value; }
 	}
 
 	Color unselected = new Color32 (0x9d, 0x9d, 0x9d, 0xff);
@@ -46,6 +52,9 @@ public class InventoryManager : MonoBehaviour {
 			
 		}
 		slots[0].inventoryIcon.GetComponentInChildren<RawImage> ().color = selected;
+		for (int i = 0; i < character.currentHealth; i++) {
+			character.BuildHeart (Instantiate(heart));
+		}
 	}
 	
 	// Update is called once per frame
