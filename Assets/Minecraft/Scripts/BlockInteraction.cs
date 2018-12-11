@@ -48,6 +48,12 @@ public class BlockInteraction : MonoBehaviour {
 
 					renderer.color = origionalColor;
 					*/
+					NavMeshAgent nav = World.Instance.mob_o.GetComponent<NavMeshAgent>();
+					Vector3 npcPos = World.Instance.mob_o.transform.position;
+					Vector3 direction1 = (npcPos - World.Instance.player.transform.position).normalized;
+					direction1 = direction1 * 2 / 2;
+					direction1 = new Vector3(direction1.x, 0f, direction1.z);
+					nav.Move(direction1);
 					if (World.Instance.mob.isCharacterDead ())
 						DestroyImmediate (World.Instance.mob_o);
 					return;

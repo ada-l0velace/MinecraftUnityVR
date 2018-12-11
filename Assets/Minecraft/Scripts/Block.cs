@@ -95,13 +95,13 @@ public class Block {
 
 			int newX = x, newY = y, newZ = z;
 			if (x < 0 || x >= World.chunkSize)
-				newX = (x - (int)(position.x)) * World.chunkSize;
+				newX = (x - (int)(position.x-0.5f)) * World.chunkSize;
 			if (y < 0 || y >= World.chunkSize)
-				newY = (y - (int)(position.y)) * World.chunkSize;
+				newY = (y - (int)(position.y-0.5f)) * World.chunkSize;
 			if (z < 0 || z >= World.chunkSize)
-				newZ = (z - (int)(position.z)) * World.chunkSize;
+				newZ = (z - (int)(position.z-0.5f)) * World.chunkSize;
 			
-			Vector3 neighbourChunkPos = this.parent.transform.position + new Vector3 (newX,
+			Vector3 neighbourChunkPos = this.parent.transform.position - new Vector3(0.5f,0.5f,0.5f) + new Vector3 (newX,
 				newY, newZ);
 
 			string nName = World.BuildChunkName (neighbourChunkPos);
