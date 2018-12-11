@@ -221,9 +221,9 @@ namespace UnityStandardAssets.Characters.FirstPerson
             // keep track of whether or not the character is walking or running
             m_IsWalking = !Input.GetKey(KeyCode.LeftShift);
 #endif
+			m_IsWalking = true;
             // set the desired speed to be walking or running
-            //speed = m_IsWalking ? m_WalkSpeed : m_RunSpeed;
-			speed = m_WalkSpeed;
+            speed = m_IsWalking ? m_WalkSpeed : m_RunSpeed;
 			Vector3 n;
 
 
